@@ -1,0 +1,8 @@
+// $("#delete_row").on('click', function(){
+				
+				// var id = $(this).data('id');
+				// // $("#delete_row").on('click',function(){
+				// // 	var id= $(this).val();
+					// alert(id);
+			
+				// });

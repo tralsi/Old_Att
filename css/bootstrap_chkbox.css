@@ -1,0 +1,8 @@
+.btn-info{width:90%;border:1px solid #efefef;margin:5px;color:#FFF}
+.btn-info.active {background-color:#337AB7 !important;color:#FFF !important;}
+.btn span.glyphicon{opacity: 0;}
+.btn.active span.glyphicon{opacity: 1;}
+/*.btn-info.active{background-color:#007ba7;color:#FFF;}
+.btn-info{width:90%;border:1px solid #efefef;margin:5px;box-shadow:5px 8px 8px 0 #ccc;}
+google red : #EA4335
+*/
