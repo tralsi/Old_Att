@@ -8,27 +8,30 @@
       
       $myusername = mysqli_real_escape_string($db,$_POST['username']);
       $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
-      
-      $sql = "SELECT * FROM users WHERE username = '$myusername' and pwd = '$mypassword'";
+            
+      $sql = "SELECT * FROM users WHERE username = '$myusername' and pwd= '$mypassword'";
       $result = mysqli_query($db,$sql);
-      if($result)
+      $count = mysqli_num_rows($result);
+     
+      if($count)
       {
-         $count = mysqli_num_rows($result);
+        
          $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+         
          $active = $row['status'];
+       //  echo " Status  = " . $active ."</br>";
 
          if($count == 1 && $active == 'A') {
             // session_register("myusername");
              $_SESSION['login_user'] = $myusername;
              header("location: welcome1.php");
           }else if($count == 1 && $active != 'A'){
-             echo "<script>alert(The user is currently not active. Please contact Administrator</script>";
+             echo "<script>alert('The user is currently not active. Please contact Administrator')</script>";
           }
       }
       else
       {
-         echo "<script>invalid Username or Password</script>";
-         //return false;
+         echo "<script type='text/javascript'> alert('invalid Username or Password');</script>";
       }
    
    }
@@ -42,6 +45,7 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
 	<link href="css/global.css" rel="stylesheet">
+   <script type='text/javascript'></script>
 	<script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
 	
@@ -73,9 +77,5 @@
 			</div>
 		</div>
 	</div>
-               
-              <!-- <div style = "font-size:11px; color:#cc0000; margin-top:10px">
-		 	 -->
-  
-</body>
+ </body>
 </html>
