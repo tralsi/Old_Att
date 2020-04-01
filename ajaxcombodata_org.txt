@@ -18,7 +18,6 @@ if(isset($_POST["course_id"]) && !empty($_POST["course_id"])){
     }else{
         echo '<option value="">Semester not available</option>';
     }
-    $query->free();
 }
 
 if(isset($_POST["semester_id"]) && !empty($_POST["semester_id"])){
@@ -37,40 +36,31 @@ if(isset($_POST["semester_id"]) && !empty($_POST["semester_id"])){
     }else{
         echo '<option value="">Division not available</option>';
     }
-    $query->free();
 }
 
-/*Following will be used for Welcome1.php subject Listing 
-only allocated subjects to respective faculties will be listed */
 
 if(isset($_POST["sem_id"]) && !empty($_POST["sem_id"])){
     //Get all Subject data
-    $facid = $_POST['facid'];
-    $crsid = $_POST['crs_id'];
-    $semid = $_POST['sem_id'];
-
-    $sub_qry = "SELECT * FROM subject_master JOIN subject_allocation ON subject_master.sub_id = subject_allocation.suballoc_sub_id AND subject_allocation.suballoc_sem = $semid AND subject_allocation.suballoc_fac_id= $facid AND subject_allocation.suballoc_course_id = $crsid";
-
-    $sub_res = mysqli_query($db,$sub_qry);
-    $str = "";
-    $str .= "echo '<option value=''>Subject</option>'";
-    if($sub_res)
-    {
-      while($sub_row = mysqli_fetch_assoc($sub_res))
-        {
-        
-        echo "<option value= ".$sub_row['sub_id']. ">". $sub_row['sub_code'] . "-" . $sub_row['sub_name']. "</option>";
-       
+	
+    $query = $db->query("SELECT * FROM subject_master WHERE subject_master.sem = ".$_POST['sem_id']."&& subject_master.course=".$_POST['crs_id']);
+    
+    //Count total number of rows
+    $rowCount2 = $query->num_rows;
+    
+    //Display Divisions 
+    if($rowCount2 > 0){
+        echo '<option value="">Select</option>';
+        while($row2 = $query->fetch_assoc()){ 
+            echo '<option value="'.$row2['sub_id'].'">'.$row2['sub_code'].' - '.$row2['sub_name'].'</option>';
         }
     }else{
         echo '<option value="">Subject NA</option>';
     }
-    mysqli_free_result($sub_res);
 }
 
 
 if(isset($_POST["fac_id"]) && !empty($_POST["fac_id"])){
-  //  echo "<script>alert('inside fac_id of AjaxCombo.php'); </script>";
+    
     //Get all Subject data
     $fac_id = $_POST["fac_id"];
     $crs = $_POST["c_id"];
@@ -91,31 +81,7 @@ if(isset($_POST["fac_id"]) && !empty($_POST["fac_id"])){
     {
         echo '<option value="">Subject NA</option>';
     }
-$qry3->free();
+
 }
-
-/*This will be Called from Class Sem Div js file to list the subjects */
-
-if(isset($_POST["csd_sem_id"]) && !empty($_POST["csd_sem_id"])){
-//echo "<script>alert('from the CSD called ajaxcombo')</script>";
-    //Get all Subject data
-    $crsid = $_POST['csd_crs_id'];
-    $semid = $_POST['csd_sem_id'];
-
-    $all_sub_qry = "SELECT * FROM subject_master WHERE course=$crsid AND sem=$semid";
-    $all_sub_res = mysqli_query($db,$all_sub_qry);
-    $str = "";
-    $str .= "echo '<option value=''>Subject</option>'";
-    if($all_sub_res)
-    {
-        while($all_sub_row = mysqli_fetch_assoc($all_sub_res))
-        {
-        echo "<option value= ".$all_sub_row['sub_id']. ">". $all_sub_row['sub_code'] . " - " . $all_sub_row['sub_name']. "</option>";
-        }
-    }
-    else{
-        echo "subject NA";
-    }
-}    
 
 ?>

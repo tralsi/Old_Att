@@ -86,14 +86,18 @@ if($count > 0)
   }  // if (count > 0) ends here
 else if($count==0)
 {
-  $query = "INSERT INTO att_master (att_date,att_crs_id,att_sem_id,att_div_id,att_lec_no,att_sub_id,att_fac_id,att_stud_id,att_stud_presence) VALUES ('$f_date',$crs,$sem,$div,$lecno,$subid,$facid,'*','P')";
-  mysqli_query($db,$query);
-  
-  //updating last entry date in faculty master
+  $query = "INSERT INTO student_attendance (att_date,lec_no,course,sem,`div`,fac,sub,abs) VALUES ('$f_date',$lecno,$crs,$sem,$div,$facid,$subid,'*')";
+  $res = mysqli_query($db,$query);
+  if($res)
+    {
+      echo "All students are marked present";
+    }
+
+   //updating last entry date in faculty master
   $qry2 = "UPDATE faculty_master SET fac_last_entry = '$f_date' WHERE faculty_id = $facid";
   mysqli_query($db,$qry2);
-  echo "<script>alert('date is $f_date and facid is $facid');</script>";
-  echo "<script>alert('All students are marked present');</script>";
+  //echo "<script>alert('date is $f_date and facid is $facid');</script>";
+  
 }
 
 }

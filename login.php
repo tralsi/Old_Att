@@ -8,30 +8,62 @@
       
       $myusername = mysqli_real_escape_string($db,$_POST['username']);
       $mypassword = mysqli_real_escape_string($db,$_POST['password']); 
-            
+      $usr_type = '';
+
+      if($myusername == $mypassword)
+      {
+         $stud_qry = "SELECT * FROM students WHERE roll_no = '$myusername'";
+         $stud_res = mysqli_query($db,$stud_qry);
+         $cnt = mysqli_num_rows($stud_res);
+            if($cnt)
+            {
+              $usr_type = "S"; //Student
+              $_SESSION['login_user'] = $myusername;
+              header("location: studentreport.php");
+
+            }
+         else
+            {
+               //if faculty login with userid & pwd both same
+            $fac_sql = "SELECT * FROM users WHERE username = '$myusername' and pwd= '$mypassword'"; // checking whether he is available in faculty table
+            $fac_res = mysqli_query($db,$fac_sql);
+            $f_cnt = mysqli_num_rows($fac_res);
+              if($f_cnt)
+               {
+               $usr_type = "F"; //Faculty
+               }
+            }
+
+      }
+
+      if($myusername != $mypassword || $usr_type =="F")
+      {      
       $sql = "SELECT * FROM users WHERE username = '$myusername' and pwd= '$mypassword'";
       $result = mysqli_query($db,$sql);
       $count = mysqli_num_rows($result);
      
-      if($count)
-      {
-        
-         $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
-         
-         $active = $row['status'];
-       //  echo " Status  = " . $active ."</br>";
+         if($count)
+         {
+            $row = mysqli_fetch_array($result,MYSQLI_ASSOC);
+            $active = $row['status'];
+         //  echo " Status  = " . $active ."</br>";
 
-         if($count == 1 && $active == 'A') {
-            // session_register("myusername");
-             $_SESSION['login_user'] = $myusername;
-             header("location: welcome1.php");
-          }else if($count == 1 && $active != 'A'){
-             echo "<script>alert('The user is currently not active. Please contact Administrator')</script>";
-          }
+            if($count == 1 && $active == 'A') {
+               // session_register("myusername");
+               $_SESSION['login_user'] = $myusername;
+               header("location: welcome1.php");
+            }else if($count == 1 && $active != 'A'){
+               echo "<script>alert('The user is currently not active. Please contact Administrator')</script>";
+            }
+         }
+         else
+            {
+               echo "<script type='text/javascript'> alert('1. invalid Username or Password');</script>";
+            }
       }
       else
       {
-         echo "<script type='text/javascript'> alert('invalid Username or Password');</script>";
+         echo "<script type='text/javascript'> alert('2. invalid Username or Password');</script>";
       }
    
    }

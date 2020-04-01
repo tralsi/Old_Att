@@ -32,8 +32,7 @@ include('session.php');
 		}
 		else
 		{
-			echo "Invalid User";
-			//echo "<br>res errno: ".mysqli_connect_error();
+			echo "<script>Invalid User</script>";
 			return false;
 		}
 		
@@ -45,17 +44,17 @@ include('session.php');
 		
 			$lastentrydate = $row['fac_last_entry'];
 		//	echo $lastentrydate;
-			$entrydate = date_create_from_format('d-m-Y',$lastentrydate);
+		//	$entrydate = date_create_from_format('d-m-Y',$lastentrydate);
 		//	echo date_format($entrydate,"d-m-Y");
-			$dt = strtotime($lastentrydate);
-			$mydate= date("d-m-Y",strtotime("+1 day", $dt)); // Next date for default entry date
-		
-			//	echo $mydate;
+		if($lastentrydate !='0000-00-00')	
+			{
 
+			$dt = strtotime($lastentrydate);
+			$nextdate= date("d-m-Y",strtotime("+1 day", $dt)); // Next date for default entry date
 			$ledt = date_create_from_format('Y-m-d',$lastentrydate); // converts to date object from String
-			
-		//	$query_sub = $db->query("SELECT * FROM subject_allocation WHERE suballoc_fac_id ='$fac_id'"); 
-			
+			//	$query_sub = $db->query("SELECT * FROM subject_allocation WHERE suballoc_fac_id ='$fac_id'"); 
+			}
+
 			$qry_sub = "SELECT * FROM subject_allocation WHERE suballoc_fac_id ='$fac_id'";
 			$res_sub = mysqli_query($db,$qry_sub);
 			if(	$res_sub)
@@ -76,7 +75,12 @@ include('session.php');
 			<input type="hidden" id="facid" value=<?php echo $fac_id ?> /> 
 			
 			<div class="col-md-4">Last entry date :
-				 <?php echo date_format($ledt,"M d, Y"); ?>
+				<span id='lastentrydate'> <?php if($lastentrydate =='0000-00-00')
+				 					echo "Not Available";
+							 else
+									echo date_format($ledt,"M d, Y");
+				  ?>
+				</span>
 			</div>
 			
 			<div class="col-md-4" style="text-align:right">
@@ -97,7 +101,11 @@ include('session.php');
 			<div class="input-group date col-md-3">
 			
 					
-					<input class="form-control" type="text" id="datepicker1" value=<?php echo $mydate ?> />
+					<input class="form-control" type="text" id="datepicker1" value=
+									<?php
+										if($lastentrydate !='0000-00-00')
+										echo $nextdate;
+										?>>
 					<span class="input-group-addon">
 						<span class="glyphicon glyphicon-calendar"></span>
 					</span>
@@ -172,23 +180,7 @@ include('session.php');
 				  
 					  <select class='form-control' name='subject' id='subject' placeholder="Subject">
 						<option value=''>Subject</option>
-					 
-						<?php
-						if($sub_rc > 0){
-						while($row = mysqli_fetch_assoc($res_sub)){ 
-						$sub_id = $row['suballoc_sub_id'];
-						$sub_name_qry = "SELECT * FROM subject_master WHERE sub_id='$sub_id'";
-						$subres = mysqli_query($db,$sub_name_qry);
-						$subrow = mysqli_fetch_assoc($subres);
-						
-							echo '<option value="'.$subrow['sub_id'].'">'.$subrow['sub_name'].'</option>';
-						}
-						}else{
-							echo '<option value="">Subject NA</option>';
-						}
-						?>
-					 
-						
+					 	
 						</select>
 						
 					

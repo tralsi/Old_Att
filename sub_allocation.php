@@ -7,15 +7,16 @@
 <html>
 <head>
 	<title>Subject Allocation </title>
-	<link rel="stylesheet" href="css/bootstrap.css">
-	 <script src="js/jquery-1.12.4.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-	<script src="js/class_sem_div.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.css">
+	 	
+		 <script src="js/jquery-1.12.4.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/class_sem_div.js"></script>
+	
 	<style>
 		#delete_row:hover{color:red;}
 		#edit_row:hover{color:green;}
 	</style>
-
 
 </head>
 
@@ -101,11 +102,18 @@
 
 		</div>
 
-		<div id="subgrid">
-						<!-- this is where subject allocation will be displayed -->
-		</div>
 	
+		
+				<div id="subgrid">
+				
+				<!-- Subject allocation will be displayed here-->
+				</div>
+
+		
+
 </div>   <!-- Container div Ends here -->
 
 </body>
+
 </html>
+ 

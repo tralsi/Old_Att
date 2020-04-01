@@ -37,11 +37,13 @@ $(document).ready(function(){
 					data:'course_id='+courseID,
 					success:function(html){
                     $('#semester').html(html);
-                    $('#divsn').html('<option value="">Div</option>'); 
+										$('#divsn').html('<option value="">Div</option>'); 
+										$('#subject').html('<option value="">Subject</option>');
 					}}); 
 				}else{
 					$('#semester').html('<option value="">Sem</option>');
-					$('#divsn').html('<option value="">Div</option>'); 
+					$('#divsn').html('<option value="">Div</option>');
+					$('#subject').html('<option value="">Subject</option>');
 				}
 			});
 			
@@ -60,6 +62,7 @@ $(document).ready(function(){
 					data:{'semester_id':semID,'crs_id':crsID,'uid':uname},
 					success:function(html){
 						$('#divsn').html(html); 
+						$('#subject').html('<option value="">Subject</option>');
 					}
 					}); 
 				}else{
@@ -72,10 +75,37 @@ $(document).ready(function(){
 			});
 			
 
-	$("#show").on('click',liststud);
+			$('#divsn').on('change',function(){
+				//$('#ajaxDiv').empty();
+				var crsID = $('#course').val();
+				var semID = $('#semester').val();
+				var divID = $('#divsn').val();
+				var fid = $('#facid').val();
+				//alert(divID);	
+					if(divID)
+					{
+					$.ajax({
+						type:'POST',
+						url:'ajaxComboData.php',
+						data:{'sem_id' : semID,'crs_id':crsID,'facid':fid},
+						success:function(html){
+								$('#subject').html(html);
+								console.log(html);
+								}
+							}); 
+					}else{
+					$('#subject').html('<option value="">Subject NA</option>'); 
+					}
+				
+				});
+
+
+	$("#show").on('click',liststud); //Will Display List of Students in ajaxdiv
 		
-		}); //dcoument.ready ends here
-		
+
+}); //dcoument.ready ends here
+
+//global function
 function getAbsentees()
 	{
 			//alert("call received");
@@ -127,8 +157,8 @@ function getAbsentees()
 						if(html)
 						{
 							alert(html);
-							$("#datepicker1").val('');
-							liststud();
+							incDate(); //Sets Next Date & update Last Entry date
+							liststud(); // get List of students again
 						
 						}
 						/*else
@@ -143,4 +173,24 @@ function getAbsentees()
 			 return false;
 			}
 	}
+
+function incDate()
+{
+		var date1 = $('#datepicker1').datepicker('getDate');
+		var fmt_dt = date1.toDateString();
+	//	console.log(m);
+		$('#lastentrydate').text(fmt_dt);
+
+		var date = new Date( Date.parse( date1 ) ); 
+		if(date.getDay()==6)					//checks for saturday
+			date.setDate( date.getDate() + 2 );
+		else
+			date.setDate( date.getDate() + 1 );
+    
+    var newDate = date.toDateString(); 
+    newDate = new Date( Date.parse( newDate ) );
+    
+    $('#datepicker1').datepicker('setDate', newDate );
+		
+}
 	

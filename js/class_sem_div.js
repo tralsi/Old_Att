@@ -9,7 +9,8 @@ $(document).ready(function(){
 					data:'course_id='+courseID,
 					success:function(html){
                     $('#semester').html(html);
-                    $('#divsn').html('<option value="">Div</option>'); 
+										$('#divsn').html('<option value="">Div</option>');
+										$('#subject').html('<option value="">Subject</option>');
 					}}); 
 				}else{
 					$('#semester').html('<option value="">Sem</option>');
@@ -49,9 +50,10 @@ $(document).ready(function(){
 				$.ajax({
 					type:'POST',
 					url:'ajaxComboData.php',
-					data:{'sem_id' : semID,'crs_id':crsID},
+					data:{'csd_sem_id' : semID,'csd_crs_id':crsID},
 					success:function(html){
 						$('#subject').html(html);
+						console.log(html);
 					}
 					}); 
 				}else{
@@ -93,6 +95,13 @@ $(document).ready(function(){
 				 var semID = $('#semester').val();
 				 var divID = $('#divsn').val();
 				 var subID = $('#subject').val();
+
+				 if(courseID == ""){alert('Select Course');$("#course").focus();	return false;}
+				 if(semID == ""){alert('Select Semester');$("#semester").focus();return false;}
+				 if(divID == ""){alert('Select Division');$("#divsn").focus();return false;}
+				 if(facID ==""){alert('Select Lecture No.');$("#lecturno").focus();return false;}
+				 if(subID ==""){alert('Select Subject.');$("#subject").focus();return false;}
+			 
 				
 					if(subID){
 						$.ajax({
@@ -105,21 +114,28 @@ $(document).ready(function(){
 						sem:semID	,
 						div_id:divID
 						}, 
-						success:function(html){
-											$("#subgrid").remove("#sub_table");
-											$('#subgrid').html(html);
-											
-						}}); 
+						success:function(data){
+								//	console.log(data);
+									if(data=='1')
+									{
+										alert('This subject is already assigned to this faculty for this division');
+									}else
+									{
+										$("#subgrid").remove("#sub_table");
+										$('#subgrid').html(data);
+									}
+					}}); 
 					}else{
 						$('#subgrid').html('No Subjects has been allocated Yet.... from Jquery  class_sem_div.js');
 						 }
 				});
 				
 				$(document).on('click', '#delete_row', function(){
-				var id = $(this).data('id');
+				var id = $(this).data('rowid');
 				var facID = $('#faculty').val();
-				
-				$del_btn = $(this);
+			//	alert('id = '+id);
+			//	alert('faculty id ='+facID);
+			//	$del_btn = $(this);
 				
 				$.ajax({
 					  url: 'ajax-subjects.php',
@@ -128,10 +144,10 @@ $(document).ready(function(){
 						'delete': 1,
 						'id': id,
 						'fac_id':facID
-							},
+									},
 						success: function(html)
 						   {
-							
+						//	console.log(html);
 							$("#subgrid").remove("#sub_table");
 							$('#subgrid').html(html);
 							}
@@ -144,7 +160,7 @@ $(document).ready(function(){
 				//alert("in Edit = " + id);
 				
 				});
-				
+		
 	}); //end of document ready function
 
 				
