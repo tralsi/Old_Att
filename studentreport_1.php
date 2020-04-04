@@ -135,6 +135,7 @@ if($stud_res)
           echo "<tr class='info'>";
           echo "<th class='text-center'>Subject</th>";
           
+          "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$sub_id AND `div`= $stud_div";
           //Displaying Subject name as a row header
           for($i=0;$i<$cnt;$i++)
           {
@@ -185,18 +186,33 @@ if($stud_res)
 
         if($days <0)
           {
-            echo "Selected From Date must be before To date";
+            echo "Selected From Date must be priot to To_date";
             return false;
           }
    
         $start_day = date('d',strtotime($frm_date));
         $end_day = $start_day + $days;
         echo "<th class='text-center'>Subjects</th>";
-        for($i=$start_day; $i<= $end_day;$i++)
-          {
-          echo "<th class='text-center'>$i</th>";
+
+      //  $att_tot_res = mysqli_query($db,$att_tot_qry);
+                 
+                if($att_tot_res)
+                    {
+                      while($row = mysqli_fetch_assoc($att_tot_res))
+                      {
+                        $att_dt = $row['att_date'];
+                        $att_lecno = $row['lec_no'];
+                        echo "<th class='text-center'>$att_dt". " ( ". $att_lecno." )</th>";
+                      }
+                    }
+          
+      //  for($i=$start_day; $i<= $end_day;$i++)
+      
+
+        //  {
+          //echo "<th class='text-center'>$i</th>";
   
-          }
+//          }
        echo "</tr>";
 
     
