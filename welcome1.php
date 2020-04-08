@@ -98,29 +98,26 @@ include('session.php');
 				<strong> Attendance for Date </strong>
 			</div>	
 				
-			<div class="input-group date col-md-3">
+				<div class="input-group date col-md-3">
 			
-					
-					<input class="form-control" type="text" id="datepicker1" value=
-									<?php
-										if($lastentrydate !='0000-00-00')
-										echo $nextdate;
-										?>>
-					<span class="input-group-addon">
-						<span class="glyphicon glyphicon-calendar"></span>
-					</span>
-				
-				
-			</div>
+						<input class="form-control" type="text" id="datepicker1" value=
+										<?php
+											if($lastentrydate !='0000-00-00')
+											echo $nextdate;
+											?>>
+						<span class="input-group-addon">
+							<span class="glyphicon glyphicon-calendar"></span>
+						</span>
+			
+				</div>
 			          
-              <script type="text/javascript">
-                $(function() {
-                    $('#datepicker1').datepicker({format:"dd-mm-yyyy",autoclose:true,endDate:'0d',todayBtn:'linked',todayHighlight:true,daysOfWeekDisabled:'0'});
-                    //$('#datetimepicker1').datetimepicker("show");
-                });
-              </script>
-			
-		</div>
+			<script type="text/javascript">
+				$(function() {
+						$('#datepicker1').datepicker({format:"dd-mm-yyyy",autoclose:true,endDate:'0d',todayBtn:'linked',todayHighlight:true,daysOfWeekDisabled:'0'});
+						//$('#datetimepicker1').datetimepicker("show");
+				});
+			</script>
+			</div> <!-- row div ends here
 	
 	</br>
         

@@ -212,19 +212,47 @@ if($stud_res)
         $att_lec_arr = array();
         $i=0;
 
-                if($tot_res)
-                    {
-                      while($row = mysqli_fetch_assoc($tot_res))
-                      {
-                        $att_dt = $row['att_date'];
-                        $att_dt_arr[$i] = $att_dt;
-                        $two_dgt =substr($att_dt,8,2);
-                        $att_lecno = $row['lec_no'];
-                        $att_lec_arr[$i] =$att_lecno;
-                        echo "<th class='text-center'>".$two_dgt. " ( ". $att_lecno. " )</th>";
-                        $i++;
-                      }
-                    }
+        $qry = "SELECT * FROM student_attendance WHERE att_date >= '2020-03-10' AND att_date <= '2020-03-20' AND course=$stud_course AND sem=$stud_sem AND `div`= $stud_div GROUP BY att_date ORDER BY att_date";   //This will bring unique date records.
+
+        $res = mysqli_query($qry);
+        
+        While($att_row = mysqli_fetch_assoc(res))  //for each unique date.....
+          {
+            $att_dt = $att_row['att_date'];
+            $att_sub = $att_row['sub'];
+
+            for($i=0;$i<count($sub_id_arr);$i++) //for checking same subject diff lect no.
+            {
+              $qry_next_lec = "SELECT * FROM student_attendance WHERE att_date = '$att_dt' AND course=$stud_course AND sem=$stud_sem AND `div`= $stud_div AND sub=$sub_id_arr[$i]";
+              $res_next_lec = mysqli_query($qry_next_lec);
+              $no_of_lects = mysqli_num_rows($res_nect_lec);
+                if($no_of_lects > 0)
+                {
+                  echo $att_dt. "lect no = ".
+                }            
+                else
+                {
+
+                }
+
+              $i++;
+            }
+          
+          }
+          
+                // if($tot_res)
+                //     {
+                //       while($row = mysqli_fetch_assoc($tot_res))
+                //       {
+                //         $att_dt = $row['att_date'];
+                //         $att_dt_arr[$i] = $att_dt;
+                //         $two_dgt =substr($att_dt,8,2);
+                //         $att_lecno = $row['lec_no'];
+                //         $att_lec_arr[$i] =$att_lecno;
+                //         echo "<th class='text-center'>".$two_dgt. " ( ". $att_lecno. " )</th>";
+                //         $i++;
+                //       }
+                //     }
      
        echo "</tr>";
 

@@ -33,35 +33,64 @@ if($stud_res)
   </head>
  
   <body>
-      <h4> Welcome , <?php echo $stud_name; ?> <a href="logout.php">logout</a></h4>
-      </br>
-      <form action="" method="POST">
-      <div class="row">
 
-          <!-- <input type="text" id="name" name="name"> -->
+    <nav class="navbar navbar-default navbar-color"> 
+   
+    <div class="container"> 
+      <div class="navbar-header"> 
+        <a class="navbar-brand" href="#" style="color:white">Welcome , <?php echo ucwords(strtolower($stud_name)) ." ( ". $stud_id . " )" ; ?> </a> 
+      </div> 
 
-          <div class="col-md-4 col-md-offset-2"><label for="frm_date">From : </label>
-          <input type="date" id="frm_date" name="frm_date"/>
+     <ul class="nav navbar-nav navbar-right">
+     
+       <li> <a href="logout.php" style="color:white" class=" text-large">
+       <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+        </li>
+     </ul>
+    
+    </div> 
+    </nav> 
+
+
+      <div class="container">
+            
+        <div class="row" style="text-align:center; vertical-align: middle">
+          <form action="" method="POST" class="form-inline form-container mt-4" role="form">  
+          
+          <div class="form-group">
+            <strong> Attendance for Roll No. 
+             <span class="text-primary text-large"><?php echo $stud_id ?></span>
+            </strong>
+          </div>
+    
+          <div class="form-group ml-4">
+            <label for="frm_date">From : </label>
+            <input type="date" id="frm_date" name="frm_date" class="form-control"/>
+          </div>
+        
+          <div class="form-group ml-4">
+            <label for="to_date">To : </label>
+            <input type="date" id="to_date" name="to_date" class="form-control"/>
           </div>
 
-          <div class="col-md-4"><label for="to_date">To : </label>
-          <input type="date" id="to_date" name="to_date"/>
-          </div>
+          <input type="submit" name="submit" value="Check" class="btn btn-info ml-4">
+          
+        </div>
 
-          <div class="col-md-2"></div>
-      </div>
-      
-      <div class="row">&nbsp</div>
+        <!-- <script type="text/javascript">
+				$(function() {
+						$('#frm_date').datepicker({format:"dd-mm-yyyy",autoclose:true,endDate:'0d',todayBtn:'linked',todayHighlight:true,daysOfWeekDisabled:'0'});
+						//$('#datetimepicker1').datetimepicker("show");
+				});
 
-      <div class="row">
-          <div class="col-md-4">&nbsp</div>
-            <div class="col-md-4">
-            <input type="submit" name="submit" value="Check">
-            </div>
-          <div class="col-md-4">&nbsp</div>
-      </div>
-
+        $(function() {
+						$('#to_date').datepicker({format:"dd-mm-yyyy",autoclose:true,endDate:'0d',todayBtn:'linked',todayHighlight:true,daysOfWeekDisabled:'0'});
+						//$('#datetimepicker1').datetimepicker("show");
+				});
+			</script> -->
+          
       </form>
+      </div>
       </br>
       </br>
       
@@ -90,7 +119,7 @@ if($stud_res)
                
                //This is to calculate & store total no. of lectures in an associative array for this subject in this division
                 //$sub_total = array();
-                $att_tot_qry = "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$sub_id AND `div`= $stud_div";
+                $att_tot_qry = "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$sub_id AND `div`= $stud_div GROUP BY att_date";
                 $att_tot_res = mysqli_query($db,$att_tot_qry);
                  
                 if($att_tot_res)
@@ -147,7 +176,7 @@ if($stud_res)
           echo "<th class='info text-center'> Att. / Total Lect. </th>";
           for($i=0;$i<$cnt;$i++)
           {
-            echo "<td class='text-center'><strong>".$sub_att[$i]. " / ".$sub_total[$i]. "</strong></td>";
+            echo "<td class='text-center'><strong>". ($sub_total[$i] - $sub_att[$i]) . " / ".$sub_total[$i]. "</strong></td>";
             //echo " (".$sub_total[$sub_id]. ")</tr>";
           }
           echo "</tr>";
@@ -160,7 +189,11 @@ if($stud_res)
             if($sub_total[$i] == 0)
               $per = 0;
             else
-            $per = ($sub_att[$i] / $sub_total[$i])*100;
+            {
+              $present = $sub_total[$i]-$sub_att[$i];
+              $per = ( $present / $sub_total[$i])*100;
+            }
+            //$per = ($sub_att[$i] / $sub_total[$i])*100;
             if($per<75)
             {
               $frmt_str = 'text-danger';
@@ -175,6 +208,7 @@ if($stud_res)
           echo "</tr>";
           echo "</table>";
           echo "</br></br>";
+        echo "</div>"; // Container Div
         
         // Detailed report
        
@@ -191,10 +225,10 @@ if($stud_res)
    
         $start_day = date('d',strtotime($frm_date));
         $end_day = $start_day + $days;
-        echo "<th class='text-center'>Subjects</th>";
+        echo "<th class='text-center'>Date / Sub </th>";
         for($i=$start_day; $i<= $end_day;$i++)
           {
-          echo "<th class='text-center'>$i</th>";
+          echo "<th class='text-center'>".sprintf("%02s", $i)."</th>";
   
           }
        echo "</tr>";
@@ -243,7 +277,7 @@ if($stud_res)
               for($j=$start_day; $j<= $end_day; $j++)
                   {
              
-                    $tot_att_qry = "SELECT * FROM student_attendance WHERE att_date='$cur_date' AND sub=$subId  AND student_attendance.div=$stud_div";
+                    $tot_att_qry = "SELECT * FROM student_attendance WHERE att_date='$cur_date' AND sub=$subId  AND student_attendance.div=$stud_div GROUP BY att_date";
 
                     $tot_att_res = mysqli_query($db,$tot_att_qry);
                     $num_rows = mysqli_num_rows($tot_att_res);
@@ -255,14 +289,14 @@ if($stud_res)
                       if(stripos($lst,$stud_id)!==false)
                         {
                           echo "<td class='text-center text-danger'>A</br>";
-                          echo "$lst</br>";
-                          echo  "pos = ".stripos($lst,$stud_id). "</br>";
-                          echo $cur_date. "</td>";
+                         // echo "$lst</br>";
+                       //   echo  "pos = ".stripos($lst,$stud_id). "</br>";
+                        //  echo $cur_date. "</td>";
                         }
                       else
                         {
                           echo "<td class='text-center text-success'>P</br>";
-                          echo $lst. "</br>". $cur_date. "</td>";
+                       //   echo $lst. "</br>". $cur_date. "</td>";
                         }
 
                       //echo "<td class='text-center'>$lst</td>";

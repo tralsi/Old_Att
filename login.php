@@ -19,7 +19,7 @@
             {
               $usr_type = "S"; //Student
               $_SESSION['login_user'] = $myusername;
-              header("location: studentreport_1.php");
+              header("location: studentreport.php");
 
             }
          else
