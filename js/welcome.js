@@ -19,7 +19,8 @@ function liststud(){
 			url:'ajax-example1.php',
 			data:'crs='+courseID+'&sem='+semID+'&divsn='+divID,
 			success:function(html){
-								$('#ajaxDiv').html(html);
+				$('#ajaxDiv').html(html);
+				$("#ajax-container").addClass("form-container");
 								
 			}}); 
 		}else{
@@ -153,13 +154,13 @@ function getAbsentees()
 				data:{'date':dt,'lecture':lectureNo,'course':courseID,'sem':semID,'div':divID, 'facultyID':facID, 'subjectid':subID, 'abslist': absent},
 				success:function(html)
 					{
-					console.log(html);
+					//console.log(html);
 						if(html)
 						{
 							alert(html);
 							incDate(); //Sets Next Date & update Last Entry date
 							liststud(); // get List of students again
-						
+							//$("#ajax-container").addClass("form-container");
 						}
 						/*else
 							alert("Unable to insert records successfully");

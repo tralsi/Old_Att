@@ -10,7 +10,13 @@
 	background-color:#337AB7;
 	color:white;
 	border-radius:0px;
-}
+}  /* used in welcome1.php and studentreport1.php navigation bar */
 .text-large {
   font-size: 125%;
 }
+
+.navbar-nav.navbar-center{
+    position: absolute;
+    left: 50%;
+	transform: translatex(-50%);
+} /* used in welcome1.php navigation bar */

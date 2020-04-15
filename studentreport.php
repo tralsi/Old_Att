@@ -34,7 +34,7 @@ if($stud_res)
  
   <body>
 
-    <nav class="navbar navbar-default navbar-color"> 
+    <nav class="navbar navbar-color navbar-fixed"> 
    
     <div class="container"> 
       <div class="navbar-header"> 
@@ -52,9 +52,12 @@ if($stud_res)
     </nav> 
 
 
-      <div class="container">
-            
+      <div class="container" style="margin:auto">
+      <center>   
         <div class="row" style="text-align:center; vertical-align: middle">
+        
+          <!-- <div class="col-md-2"></div> -->
+          <div class="col-md-10 col-md-offset-1">
           <form action="" method="POST" class="form-inline form-container mt-4" role="form">  
           
           <div class="form-group">
@@ -75,7 +78,7 @@ if($stud_res)
 
           <input type="submit" name="submit" value="Check" class="btn btn-info ml-4">
           
-        </div>
+        <!-- </div> -->
 
         <!-- <script type="text/javascript">
 				$(function() {
@@ -91,6 +94,10 @@ if($stud_res)
           
       </form>
       </div>
+      
+      </div> <!-- row div -->
+      </center>
+      </div> <!-- Container div -->
       </br>
       </br>
       
@@ -119,7 +126,7 @@ if($stud_res)
                
                //This is to calculate & store total no. of lectures in an associative array for this subject in this division
                 //$sub_total = array();
-                $att_tot_qry = "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$sub_id AND `div`= $stud_div GROUP BY att_date";
+                $att_tot_qry = "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$sub_id AND `div`= $stud_div"; // GROUP BY att_date ORDER BY row_id
                 $att_tot_res = mysqli_query($db,$att_tot_qry);
                  
                 if($att_tot_res)
@@ -134,7 +141,7 @@ if($stud_res)
 
                 //This is to calculate & store Student's attendance in an associative array for this subject
                 //$stud_att = array();
-                $stud_sub_att_qry = "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$sub_id AND `div`= $stud_div AND FIND_IN_SET('$stud_id',abs)";
+                $stud_sub_att_qry = "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$sub_id AND `div`= $stud_div AND FIND_IN_SET('$stud_id',abs)";// GROUP BY att_date ORDER BY row_id
 
                 $stud_sub_att_res = mysqli_query($db,$stud_sub_att_qry);
                
@@ -225,11 +232,10 @@ if($stud_res)
    
         $start_day = date('d',strtotime($frm_date));
         $end_day = $start_day + $days;
-        echo "<th class='text-center'>Date / Sub </th>";
+        echo "<th class='text-center'>Date / Sub (Lec) </th>";
         for($i=$start_day; $i<= $end_day;$i++)
           {
           echo "<th class='text-center'>".sprintf("%02s", $i)."</th>";
-  
           }
        echo "</tr>";
 
@@ -277,29 +283,44 @@ if($stud_res)
               for($j=$start_day; $j<= $end_day; $j++)
                   {
              
-                    $tot_att_qry = "SELECT * FROM student_attendance WHERE att_date='$cur_date' AND sub=$subId  AND student_attendance.div=$stud_div GROUP BY att_date";
+                    $tot_att_qry = "SELECT * FROM student_attendance WHERE att_date='$cur_date' AND sub=$subId  AND student_attendance.div=$stud_div";
 
                     $tot_att_res = mysqli_query($db,$tot_att_qry);
                     $num_rows = mysqli_num_rows($tot_att_res);
                     if($num_rows>0)
                     {
                       //echo "<td class='text-center'>Y</td>";
-                      $row=mysqli_fetch_assoc($tot_att_res);
-                      $lst = $row['abs'];
-                      if(stripos($lst,$stud_id)!==false)
+                      if($num_rows==1)
                         {
-                          echo "<td class='text-center text-danger'>A</br>";
-                         // echo "$lst</br>";
-                       //   echo  "pos = ".stripos($lst,$stud_id). "</br>";
-                        //  echo $cur_date. "</td>";
+                         $row=mysqli_fetch_assoc($tot_att_res);
+                         $lst = $row['abs'];
+                          if(stripos($lst,$stud_id)!==false)
+                            echo "<td class='text-center text-danger'><strong>A</strong></td>";
+                          else
+                            echo "<td class='text-center text-success'><strong>P</strong></td>";
                         }
                       else
+                      {
+                        $str = "";
+                        while($row=mysqli_fetch_assoc($tot_att_res))
                         {
-                          echo "<td class='text-center text-success'>P</br>";
-                       //   echo $lst. "</br>". $cur_date. "</td>";
+                          $lst = $row['abs'];
+                          $lect = $row['lec_no'];
+                          
+                          if(stripos($lst,$stud_id)!==false)
+                            {
+                              $str .= "<small><span class='text-danger'>A(" .$lect. ")&nbsp</span></small>";
+                              //echo "<td class='text-center text-danger'>A(" .$lect. ")";
+                            }
+                          else
+                            {
+                              $str .= "<small><span class='text-success'>P(" .$lect. ")&nbsp</span></small>";
+                              //echo "<td class='text-center text-success'>P(".$lect.")";
+                            }
+                            
                         }
-
-                      //echo "<td class='text-center'>$lst</td>";
+                        echo "<td class='text-center'><strong>". $str . "</strong></td>";
+                      }
                       
                     }
                     else
@@ -335,7 +356,7 @@ if($stud_res)
                       //   {
                       //     echo "<td>-</td>";
                       //   }
-                  } //Day loop ends
+                  } //Day for  loop ends
 
               echo "</tr>";
 

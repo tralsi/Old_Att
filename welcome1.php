@@ -46,7 +46,7 @@ include('session.php');
 		//	echo $lastentrydate;
 		//	$entrydate = date_create_from_format('d-m-Y',$lastentrydate);
 		//	echo date_format($entrydate,"d-m-Y");
-		if($lastentrydate !='0000-00-00')	
+			if($lastentrydate !='0000-00-00')	
 			{
 
 			$dt = strtotime($lastentrydate);
@@ -64,21 +64,72 @@ include('session.php');
 		}
 		
    ?>
+
+<nav class="navbar navbar-color"> 
+   
+   <div class="container"> 
+	 <!-- <div class="navbar-header">  -->
+	 <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<span class="glyphicon glyphicon-menu-hamburger" style="color:white"></span>
+				</a>
+
+				<div class="navbar-brand"> 
+					Welcome ,<span id="userid"> <?php echo ucwords(strtolower($fac_fullname)); ?></span>
+				</div>
+
+	  		 <ul class="dropdown-menu">
+				<li><a href="#">Action</a></li>
+				<li><a href="#">Another action</a></li>
+				<li><a href="#">Something else here</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Separated link</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">One more separated link</a></li>
+            </ul>
+          </li>
+		</ul>
+	
+	
+	   <ul class="nav navbar-nav navbar-center  navbar-brand">
+		<li>Last entry date : 
+			<span id='lastentrydate'>
+			 <?php if($lastentrydate =='0000-00-00')
+				echo "Not Available";
+				else
+			echo date_format($ledt,"M d, Y");
+			?>
+			</span>
+		</li>
+	   </ul>
+	
+
+	<ul class="nav navbar-nav navbar-right">
+	  <li> <a href="logout.php" style="color:white" class=" text-large">
+	  <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+	   </li>
+	</ul>
+
+	</div><!-- /.navbar-collapse -->
+   </div> 
+   </nav> 
+
    		
    <div class="container form-container">
-		<div class="row text-info">
+   <input type="hidden" id="facid" value=<?php echo $fac_id ?> />
+		<!-- <div class="row text-info">
 			<strong>
 			<div class="col-md-4">Welcome
-				<span id="userid"> <?php echo $fac_fullname; ?> </span>
+				<span id="userid"> <?php //echo $fac_fullname; ?> </span>
 			</div>
-			
-			<input type="hidden" id="facid" value=<?php echo $fac_id ?> /> 
-			
+				
 			<div class="col-md-4">Last entry date :
-				<span id='lastentrydate'> <?php if($lastentrydate =='0000-00-00')
+				<span id='lastentrydate'> <?php /* if($lastentrydate =='0000-00-00')
 				 					echo "Not Available";
 							 else
-									echo date_format($ledt,"M d, Y");
+									echo date_format($ledt,"M d, Y");*/
 				  ?>
 				</span>
 			</div>
@@ -87,15 +138,16 @@ include('session.php');
 				<a href="logout.php">Sign Out</a>
 			</div>
 			</strong>
-		</div>
+		</div> -->
 		
 		<div class="row">&nbsp</div>
    
 		<div class="row"> 
 			
-			<div class="col-md-3 col-md-offset-3 text-info">
-				<span class="glyphicon glyphicon-education" style=" font-size:30px"></span>
-				<strong> Attendance for Date </strong>
+			<div class="col-md-3 col-md-offset-3 text-info text-right">
+				<!-- <label for="datepicker1" class="form-control text-info"> -->
+				<span class="glyphicon glyphicon-education text-large"></span>
+				<strong style="vertical-align:middle"> Attendance for Date </strong> </label>
 			</div>	
 				
 				<div class="input-group date col-md-3">
@@ -117,7 +169,7 @@ include('session.php');
 						//$('#datetimepicker1').datetimepicker("show");
 				});
 			</script>
-			</div> <!-- row div ends here
+			</div> <!-- row div ends here -->
 	
 	</br>
         
@@ -191,11 +243,11 @@ include('session.php');
 	</nav>
 	</div>
 	
-	<div class="container form-container">
-       <div id = 'ajaxDiv'>Your result will display here  <!-- div will be closed by ajax html with register button -->
-	   </br>
-	   
-	 </div>  
+	<div class="container" id="ajax-container">
+       <div id = 'ajaxDiv'></div>  
+	</br>
+	
+
 	</body>
    
 </html>
