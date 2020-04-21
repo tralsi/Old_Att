@@ -102,8 +102,7 @@
 						<label for="pwd">Password :</label>
 						<input type = "password" name = "password" class = "form-control" id="pwd" placeholder="Enter your password"/>
 					</div>
-		
-				
+						
 				<input type = "submit" value = "Submit" class="btn btn-primary btn-block"/>
 			</form>
 			</div>

@@ -49,7 +49,7 @@ if(isset($_POST["sem_id"]) && !empty($_POST["sem_id"])){
     $crsid = $_POST['crs_id'];
     $semid = $_POST['sem_id'];
 
-    $sub_qry = "SELECT * FROM subject_master JOIN subject_allocation ON subject_master.sub_id = subject_allocation.suballoc_sub_id AND subject_allocation.suballoc_sem = $semid AND subject_allocation.suballoc_fac_id= $facid AND subject_allocation.suballoc_course_id = $crsid";
+    $sub_qry = "SELECT DISTINCT * FROM subject_master JOIN subject_allocation ON subject_master.sub_id = subject_allocation.suballoc_sub_id AND subject_allocation.suballoc_sem = $semid AND subject_allocation.suballoc_fac_id= $facid AND subject_allocation.suballoc_course_id = $crsid";
 
     $sub_res = mysqli_query($db,$sub_qry);
     $str = "";

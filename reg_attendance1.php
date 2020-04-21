@@ -77,6 +77,11 @@ if($count > 0)
         $qry1 = "UPDATE faculty_master SET fac_last_entry = '$f_date' WHERE faculty_id = $facid";
       //$qry1 = "INSERT INTO faculty_master (fac_last_entry) VALUES ('$f_date')";
         mysqli_query($db,$qry1);
+
+        //updateting last attendance date in respective subject allocation table record
+        $qry3 = "UPDATE subject_allocation SET suballoc_last_att_date = '$f_date' WHERE suballoc_fac_id = $facid AND suballoc_course_id= $crs AND suballoc_sem = $sem AND suballoc_div = $div AND suballoc_sub_id = $subid";
+        
+        mysqli_query($db,$qry3);
         //echo "date is $f_date and facid is $facid');</script>";
         echo "$count Students marked Absent";
       }
@@ -96,6 +101,22 @@ else if($count==0)
    //updating last entry date in faculty master
   $qry2 = "UPDATE faculty_master SET fac_last_entry = '$f_date' WHERE faculty_id = $facid";
   mysqli_query($db,$qry2);
+
+
+  //Update last attendance date in subject Allcation
+  //echo "facid =".$facid. " crs_id = ". $crs. " sem =".$sem . " div = ". $div . " sub_id =".$subid;
+
+  $qry3 = "UPDATE subject_allocation SET suballoc_last_att_date = '$f_date' WHERE suballoc_fac_id = $facid AND suballoc_course_id= $crs AND suballoc_sem = $sem AND suballoc_div = $div AND suballoc_sub_id = $subid";
+  mysqli_query($db,$qry3);
+  if(mysqli_query($db,$qry3))
+  {
+
+  }
+  else
+  {
+    echo "error updating Last att Date in Subject allocation table ". mysqli_error($db);
+  }
+  
   //echo "<script>alert('date is $f_date and facid is $facid');</script>";
   
 }

@@ -1,4 +1,4 @@
-<?PHP
+<?php
 include('session.php');
 
 $stud_id= $_SESSION['login_user'];
@@ -79,19 +79,7 @@ if($stud_res)
           <input type="submit" name="submit" value="Check" class="btn btn-info ml-4">
           
         <!-- </div> -->
-
-        <!-- <script type="text/javascript">
-				$(function() {
-						$('#frm_date').datepicker({format:"dd-mm-yyyy",autoclose:true,endDate:'0d',todayBtn:'linked',todayHighlight:true,daysOfWeekDisabled:'0'});
-						//$('#datetimepicker1').datetimepicker("show");
-				});
-
-        $(function() {
-						$('#to_date').datepicker({format:"dd-mm-yyyy",autoclose:true,endDate:'0d',todayBtn:'linked',todayHighlight:true,daysOfWeekDisabled:'0'});
-						//$('#datetimepicker1').datetimepicker("show");
-				});
-			</script> -->
-          
+         
       </form>
       </div>
       
@@ -165,32 +153,36 @@ if($stud_res)
           }
 
           // Displaying Sujectwise Total Lectures & Respective attendance of the student
-          
+          echo "<div col-md-10 col-md-offset-1><center>";
+          echo "<span class='color-mygreen text-large' style='padding:15px;'>Attendance for ". $stud_id . " from " .date('d-M-Y',strtotime($frm_date)) . " to ".date('d-M-Y',strtotime($to_date)). " </span></br>";
+          echo "</center></div>";
+          echo "</br></br>";
 
-          echo "<table class='table table-bordered table-hover table-condensed' style='width:75%; margin:auto'>";
-          echo "<tr class='info'>";
-          echo "<th class='text-center'>Subject</th>";
+
+          echo "<table class='table table-bordered' style='width:75%; margin:auto'>";
+          echo "<tr class='navbar-color font-weight-lighter'>";
+          echo "<td class='navbar-color text-center'>Subject</td>";
           
           //Displaying Subject name as a row header
           for($i=0;$i<$cnt;$i++)
           {
-            echo "<th class='text-center'>$sub[$i]";
+            echo "<td class='text-center'>$sub[$i]";
             //echo " (".$sub_total[$i]. ")</th>";
           }
           echo "</tr>";
 
           echo "<tr>";
-          echo "<th class='info text-center'> Att. / Total Lect. </th>";
+          echo "<td class='navbar-color text-center'> Att. / Total Lect. </td>";
           for($i=0;$i<$cnt;$i++)
           {
-            echo "<td class='text-center'><strong>". ($sub_total[$i] - $sub_att[$i]) . " / ".$sub_total[$i]. "</strong></td>";
+            echo "<td class='text-center'>". ($sub_total[$i] - $sub_att[$i]) . " / ".$sub_total[$i]. "</strong></td>";
             //echo " (".$sub_total[$sub_id]. ")</tr>";
           }
           echo "</tr>";
 
           //Calculating % attendance
           echo "<tr>";
-          echo "<th class='info text-center'> Percentage (%) </th>";
+          echo "<td class='navbar-color text-center font-weight-lighter'> Percentage (%) </td>";
           for($i=0;$i<$cnt;$i++)
           {
             if($sub_total[$i] == 0)
@@ -220,7 +212,7 @@ if($stud_res)
         // Detailed report
        
         echo "<table class='table table-bordered table-hover table-condensed' style='width:75%; margin:auto'>";
-        echo "<tr class='info'>";
+        echo "<tr class='navbar-color'>";
 
         $days = (strtotime($to_date) - strtotime($frm_date))/86400;
 
@@ -232,10 +224,10 @@ if($stud_res)
    
         $start_day = date('d',strtotime($frm_date));
         $end_day = $start_day + $days;
-        echo "<th class='text-center'>Date / Sub (Lec) </th>";
+        echo "<td class='text-center navbar-color'><span>&#8595;</span> Sub / Date <span>&#8594;</span> </td>";
         for($i=$start_day; $i<= $end_day;$i++)
           {
-          echo "<th class='text-center'>".sprintf("%02s", $i)."</th>";
+          echo "<td class='navbar-color text-center'>".sprintf("%02s", $i)."</td>";
           }
        echo "</tr>";
 
@@ -253,7 +245,7 @@ if($stud_res)
               
               $att_array = array();
               $subId = $sub_id_arr[$i];
-              echo "<th class='text-center'>$sub_name</th>";
+              echo "<td class='text-center navbar-color'>$sub_name</td>";
 
               $cur_date = $frm_date;
 
@@ -287,10 +279,11 @@ if($stud_res)
 
                     $tot_att_res = mysqli_query($db,$tot_att_qry);
                     $num_rows = mysqli_num_rows($tot_att_res);
-                    if($num_rows>0)
+                    //if that day attendance has been marked for a subject once or more
+                    if($num_rows>0) 
                     {
                       //echo "<td class='text-center'>Y</td>";
-                      if($num_rows==1)
+                      if($num_rows==1) //if att marked only once
                         {
                          $row=mysqli_fetch_assoc($tot_att_res);
                          $lst = $row['abs'];
@@ -299,7 +292,7 @@ if($stud_res)
                           else
                             echo "<td class='text-center text-success'><strong>P</strong></td>";
                         }
-                      else
+                      else  // more than one lecture for the same subject has been delivered by same faculty
                       {
                         $str = "";
                         while($row=mysqli_fetch_assoc($tot_att_res))

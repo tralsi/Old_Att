@@ -10,7 +10,22 @@
 	background-color:#337AB7;
 	color:white;
 	border-radius:0px;
+	
 }  /* used in welcome1.php and studentreport1.php navigation bar */
+
+.color-mygreen 
+{
+	background-color:#90C81F;
+	color:white;
+	border-radius:0px;
+	
+}
+
+ul.dropdown-menu li a:hover, ul.nav.navbar-nav.navbar-right > li > a:hover , body > nav > div > div > ul:nth-child(1) > li > a:hover{
+	background-color:#337AB7;
+	color:white;
+}
+
 .text-large {
   font-size: 125%;
 }
@@ -20,3 +35,13 @@
     left: 50%;
 	transform: translatex(-50%);
 } /* used in welcome1.php navigation bar */
+
+a:hover{
+	/*background-color:white;*/
+	color:#337AB7;
+}
+
+select option
+{
+	margin-bottom: 20px;
+}

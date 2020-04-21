@@ -153,20 +153,19 @@ function getAbsentees()
 				url:'reg_attendance1.php', // changes done @ Home
 				data:{'date':dt,'lecture':lectureNo,'course':courseID,'sem':semID,'div':divID, 'facultyID':facID, 'subjectid':subID, 'abslist': absent},
 				success:function(html)
+				{
+				//console.log(html);
+					if(html)
 					{
-					//console.log(html);
-						if(html)
-						{
-							alert(html);
-							incDate(); //Sets Next Date & update Last Entry date
-							liststud(); // get List of students again
-							//$("#ajax-container").addClass("form-container");
-						}
-						/*else
-							alert("Unable to insert records successfully");
-					
-						}*/
-					}})
+					alert(html);
+					incDate(); //Sets Next Date & update Last Entry date
+					liststud(); // get List of students 
+					}
+					/*else
+						alert("Unable to insert records successfully");
+				
+					}*/
+				}})
 				}
 			else
 			{

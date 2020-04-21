@@ -1,0 +1,150 @@
+<?php
+include('session.php');
+if(isset($_SESSION['fac_full_name']))
+  {
+    $fac_fullname = $_SESSION['fac_full_name'];
+    $fac_id = $_SESSION['facid'];
+  }
+else
+  header("location: login.php");
+?>
+
+<html>
+  <head>
+ <!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap-datepicker3.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/jquery-1.12.4.min.js"></script>
+    <link href="css/global.css" rel="stylesheet">
+
+    <script src="js/bootstrap.min.js"></script>
+    <!-- <script src="js/bootstrap-datepicker.min.js"></script> -->
+    <script src="js/class_att.js"></script>
+	<title>Class Attendance</title>
+  </head>
+<body>
+<input type="hidden" id="fac" value="<?php echo $fac_id ?>">
+<!-- Top  Navigation Bar  -->
+
+<nav class="navbar navbar-color"> 
+   
+   <div class="container"> 
+	 <!-- <div class="navbar-header">  -->
+	 <div class="collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+			<li class="dropdown">
+				<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<span class="glyphicon glyphicon-menu-hamburger navbar-color"></span>
+				</a>
+
+				<div class="navbar-brand"> 
+					Welcome ,<span id="userid"> <?php echo ucwords(strtolower($fac_fullname)); ?></span>
+				</div>
+
+	  		 <ul class="dropdown-menu">
+                <li><a href="welcome1.php" style="padding:10px"> <span class="glyphicon glyphicon-home" style="margin-right:10px"></span>Faculty Home</a></li>
+
+				<li><a href="faculty_subjects.php" style="padding:10px"><span class="glyphicon glyphicon-book" style="margin-right:10px"></span> Subjects</a></li>
+                
+                <li role="separator" class="divider"></li>
+
+                <li><a href="#" style="padding:10px">
+                <span class="glyphicon glyphicon-education" style="margin-right:10px"></span> Student's Attendance</a></li>
+
+                <li><a href="class_attendance.php" style="padding:10px">
+                <span class="glyphicon glyphicon-list-alt" style="margin-right:10px"></span> Class Attendance</a></li>
+            </ul>
+          </li>
+		</ul>
+
+	<ul class="nav navbar-nav navbar-right">
+	  <li> <a href="logout.php" style="color:white" class=" text-large">
+	  <span class="glyphicon glyphicon-log-out"></span> Logout</a>
+	   </li>
+	</ul>
+
+	</div><!-- /.navbar-collapse -->
+   </div> 
+   </nav> 
+
+<!-- Form in Navigation -->
+
+   <div class="container" style="margin:auto">
+  <center>   
+  <div class="row" style="text-align:center; vertical-align: middle">
+        
+  
+
+    <div class="col-md-12">
+      <form action="" method="POST" class="form-inline form-container mt-4" role="form">  
+      
+        <div class="form-group">
+        <!-- <label for="sub">Subject : &nbsp </label> -->
+         <select name="sub" id="sub" class="form-control">
+         <option value="" disabled selected hidden>Subject</option>
+        
+         <?php
+          $qry_sub = "SELECT DISTINCT t1.suballoc_sub_id, t2.sub_name FROM subject_allocation t1,subject_master t2 WHERE t1.suballoc_fac_id = $fac_id AND t1.suballoc_sub_id=t2.sub_id ORDER BY t1.suballoc_course_id, t1.suballoc_sem, t1.suballoc_div";
+          $sub_res = mysqli_query($db,$qry_sub);
+          if($sub_res)
+          {
+            while($row=mysqli_fetch_assoc($sub_res))
+            {
+            echo "<option value=".$row['suballoc_sub_id'].">".$row['sub_name']."</option>";
+            }
+          }
+          else
+          {
+            echo "error ". mysqli_error($db);
+          }
+        ?>
+        </select>
+      </div>
+
+
+      <div class="form-group">
+        <!-- <label for="sem">Sem : &nbsp </label> -->
+         <select name="sem" id="sem" class="form-control">
+         <option value=""disabled selected hidden>Sem</option>
+         </select>
+      </div>
+
+      <div class="form-group">
+        <!-- <label for="div">Div : &nbsp </label> -->
+         <select name="div" id="div" class="form-control">
+         <option value="" disabled selected hidden>Div</option> 
+         </select>
+      </div>
+
+      <div class="form-group ml-4">
+        <label for="frm_date">&nbsp From : </label>
+        <input type="date" id="frm_date" name="frm_date" class="form-control"/>
+      </div>
+    
+      <div class="form-group ml-4">
+        <label for="to_date">&nbsp To : </label>
+        <input type="date" id="to_date" name="to_date" class="form-control"/>
+      </div>
+
+      <input type="button" name="check_btn" id="check_btn" value="Check" class="btn btn-info ml-4">
+          
+  </form>
+  </div>
+  
+  </div> <!-- row div -->
+  </center>
+  </div> <!-- Container div -->
+  </br>
+  </br>
+  
+  <div class="container" id="ajax-container">
+    <div id='ajax-attendance'>
+    </div>
+  </div>
+
+</body>
+</html>

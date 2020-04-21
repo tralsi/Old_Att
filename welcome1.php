@@ -10,12 +10,12 @@ include('session.php');
 
     <link rel="stylesheet" href="css/bootstrap-datepicker3.css">
     <link href="css/bootstrap.min.css" rel="stylesheet">
-		<link href="css/bootstrap_chkbox.css" rel="stylesheet"> <!-- added on 09-Dec-2018 -->
-		<link href="css/global.css" rel="stylesheet">
+	<link href="css/bootstrap_chkbox.css" rel="stylesheet"> <!-- added on 09-Dec-2018 -->
+	<link href="css/global.css" rel="stylesheet">
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-datepicker.min.js"></script>
-		<script src="js/welcome.js"></script>
+	<script src="js/welcome.js"></script>
 
     <title>Welcome </title>
   </head>
@@ -40,8 +40,9 @@ include('session.php');
 		{
 			$row = mysqli_fetch_assoc($res);
 			$fac_id = $row['faculty_id'];
+			$_SESSION['facid']=$fac_id;
 			$fac_fullname = $row['faculty_salutation']. " ". $row['faculty_fname']. " ". $row['faculty_lname'];
-		
+			$_SESSION['fac_full_name']=$fac_fullname; // will require on faculty_subjects.php navbar
 			$lastentrydate = $row['fac_last_entry'];
 		//	echo $lastentrydate;
 		//	$entrydate = date_create_from_format('d-m-Y',$lastentrydate);
@@ -73,7 +74,7 @@ include('session.php');
         <ul class="nav navbar-nav">
 			<li class="dropdown">
 				<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-					<span class="glyphicon glyphicon-menu-hamburger" style="color:white"></span>
+					<span class="glyphicon glyphicon-menu-hamburger navbar-color"></span>
 				</a>
 
 				<div class="navbar-brand"> 
@@ -81,13 +82,20 @@ include('session.php');
 				</div>
 
 	  		 <ul class="dropdown-menu">
-				<li><a href="#">Action</a></li>
-				<li><a href="#">Another action</a></li>
-				<li><a href="#">Something else here</a></li>
-				<li role="separator" class="divider"></li>
+				 <!-- <li><a href="welcome1.php" style="padding:10px"> <span class="glyphicon glyphicon-home" style="margin-right:10px"></span>Faculty Home</a></li> -->
+
+				<li><a href="faculty_subjects.php" style="padding:10px"><span class="glyphicon glyphicon glyphicon-book" style="margin-right:10px"></span> Subjects</a></li>
+
+				<li><a href="#" style="padding:10px">
+				<span class="glyphicon glyphicon glyphicon-education" style="margin-right:10px"></span> Student's Attendance</a></li>
+		
+				<li><a href="class_attendance.php" style="padding:10px">
+					<span class="glyphicon glyphicon-list-alt" style="margin-right:10px"></span> Class Attendance</a>
+				</li>
+				<!-- <li role="separator" class="divider"></li>
 				<li><a href="#">Separated link</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="#">One more separated link</a></li>
+				<li><a href="#">One more separated link</a></li> -->
             </ul>
           </li>
 		</ul>
@@ -225,15 +233,12 @@ include('session.php');
 					?>
 					
 				</select>
-				
+		
 				  
-					  <select class='form-control' name='subject' id='subject' placeholder="Subject">
-						<option value=''>Subject</option>
-					 	
-						</select>
-						
-					
-				
+				<select class='form-control' name='subject' id='subject'>
+				<option value=''>Subject</option>
+				</select>
+			
 			<input type='button' class="form-control btn btn-info" value="List Students" name="show" id="show">
 			<!--  onclick = 'ajaxFunction()' -->
 			
