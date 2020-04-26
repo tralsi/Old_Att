@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   /* This is for Sem combobox population */
   $('#sub').on('change',function(){
     var subID= $(this).val();
@@ -32,7 +33,7 @@ $(document).ready(function(){
     data:{'sub_id':subID,'fac_id':facID,'semid': semID},
     success:function(html){
            $('#div').html(html);
-           console.log(html);
+           //console.log(html);
     }}); 
   }else{
     $('#div').html('<option value="">Div</option>');
@@ -58,7 +59,7 @@ $(document).ready(function(){
     if(frmDate == ""){alert('Please Select From Date');$("#frm_date").focus();	return false;}
     if(toDate == ""){alert('Please Select To Date');$("#to_date").focus();	return false;}
     var start = $("#frm_date").val();
-    //alert (start);
+    //alert(start);
     var end = $("#to_date").val();
    // var end = $("#to_date").datepicker("getDate").getTime();
     //alert(end);
@@ -79,4 +80,5 @@ $(document).ready(function(){
     }
 
   })
-})
+
+}) //Document Ready Function

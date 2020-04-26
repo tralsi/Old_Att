@@ -86,7 +86,7 @@ include('session.php');
 
 				<li><a href="faculty_subjects.php" style="padding:10px"><span class="glyphicon glyphicon glyphicon-book" style="margin-right:10px"></span> Subjects</a></li>
 
-				<li><a href="#" style="padding:10px">
+				<li><a href="student_attendance.php" style="padding:10px">
 				<span class="glyphicon glyphicon glyphicon-education" style="margin-right:10px"></span> Student's Attendance</a></li>
 		
 				<li><a href="class_attendance.php" style="padding:10px">

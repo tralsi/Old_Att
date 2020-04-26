@@ -18,12 +18,11 @@ else
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <script src="js/jquery-1.12.4.min.js"></script>
     <link href="css/global.css" rel="stylesheet">
-
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/class_att.js"></script> <!--for ajax Call -->
-    
+    <script src="js/stud_att.js"></script>
+   
 
-	<title>Class Attendance</title>
+	<title>Student Attendance</title>
   </head>
 <body>
 <input type="hidden" id="fac" value="<?php echo $fac_id ?>">
@@ -51,8 +50,8 @@ else
                 
                 <li role="separator" class="divider"></li>
 
-                <li><a href="#" style="padding:10px">
-                <span class="glyphicon glyphicon-education" style="margin-right:10px"></span> Student's Attendance</a></li>
+                <!-- <li><a href="#" style="padding:10px">
+                <span class="glyphicon glyphicon-education" style="margin-right:10px"></span> Student's Attendance</a></li> -->
 
                 <li><a href="class_attendance.php" style="padding:10px">
                 <span class="glyphicon glyphicon-list-alt" style="margin-right:10px"></span> Class Attendance</a></li>
@@ -70,18 +69,21 @@ else
    </div> 
    </nav> 
 
-<!-- Form in Navigation -->
+<!-- Form in Navigation bar -->
 
    <div class="container" style="margin:auto">
-  <center>   
-  <div class="row" style="text-align:center; vertical-align: middle">
-        
   
-
+  <div class="row" style="text-align:center; vertical-align: middle">
+  
     <div class="col-md-12">
       <form action="" method="POST" class="form-inline form-container mt-4" role="form">  
       
-        <div class="form-group">
+      <!-- <div class="form-group"> -->
+        <!-- <label for="sem">Sem : &nbsp </label> -->
+         
+      <!-- <div> -->
+
+      <div class="form-group">
         <!-- <label for="sub">Subject : &nbsp </label> -->
          <select name="sub" id="sub" class="form-control">
          <option value="" disabled selected hidden>Subject</option>
@@ -104,21 +106,27 @@ else
         </select>
       </div>
 
+      <select name="rollno" id="rollno" class="form-control">
+      <option value="" disabled selected hidden>Roll No.</option>
+      </select>
 
-      <div class="form-group">
-        <!-- <label for="sem">Sem : &nbsp </label> -->
+      <!-- <div id="studlist"></div> -->
+
+      <!-- <div class="form-group">
+        <label for="sem">Sem : &nbsp </label>
          <select name="sem" id="sem" class="form-control">
          <option value=""disabled selected hidden>Sem</option>
          </select>
       </div>
-
+        
       <div class="form-group">
-        <!-- <label for="div">Div : &nbsp </label> -->
+        <label for="div">Div : &nbsp </label>
          <select name="div" id="div" class="form-control">
          <option value="" disabled selected hidden>Div</option> 
          </select>
-      </div>
+      </div> -->
 
+      
       <div class="form-group ml-4">
         <label for="frm_date">&nbsp From : </label>
         <input type="date" id="frm_date" name="frm_date" class="form-control"/>
@@ -128,19 +136,21 @@ else
         <label for="to_date">&nbsp To : </label>
         <input type="date" id="to_date" name="to_date" class="form-control"/>
       </div>
-      <input type="button" name="check_btn" id="check_btn" value="Check" class="btn btn-info ml-4">
+      
+      <!-- </br> -->
+      <input type="button" name="check_btn" id="check_btn" value="Check" class="btn btn-info ml-6">
           
   </form>
   </div>
   
   </div> <!-- row div -->
-  </center>
+  <!-- </center> -->
   </div> <!-- Container div -->
   </br>
   </br>
   
-  <div class="container" id="ajax-container">     
-        <div id='ajax-attendance'>
+  <div class="container">     
+        <div id='stud-attendance'>
         </div>
       
   </div>
@@ -161,11 +171,14 @@ else
   
   var wb = XLSX.utils.book_new();
  // var Heading =[["Class Attendace"]];
-  wb.SheetNames.push("Class Attendance");
+  wb.SheetNames.push("Student Attendance");
    //XLSX.utils.aoa_to_sheet(Heading);
    var ws2 = XLSX.utils.table_to_sheet(document.getElementById('rptable'));
   wb.Sheets["Class Attendance"] = ws2;
   XLSX.writeFile(wb, 'Attendance.xlsx');
 }
+
+
+
   </script>
 </html>
