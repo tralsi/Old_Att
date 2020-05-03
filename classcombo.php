@@ -76,11 +76,11 @@ if(isset($_POST['frm_date']) && isset($_POST['to_date']))
   <table class="table table-bordered" id="rptable">
     <thead>
     <tr class='text-center navbar-color'>
-      <td>Roll No./Date</td>
+      <td class='text-center navbar-color'>Roll No./Date</td>
       <?php
         $days = (strtotime($to_date) - strtotime($frm_date))/86400;
-        $start_day = date('d',strtotime($frm_date));
-        $end_day = $start_day + $days;
+        //$start_day = date('d',strtotime($frm_date));
+        //$end_day = $start_day + $days;
         // for($i=$start_day; $i<= $end_day;$i++)
         //   {
         //   echo "<td class='navbar-color text-center'>".sprintf("%02s", $i)."</td>";
@@ -91,7 +91,7 @@ if(isset($_POST['frm_date']) && isset($_POST['to_date']))
         {
           $day = date('d',strtotime($curr_date));
           echo "<td class='navbar-color text-center'>".sprintf("%02s", $day)."</td>";
-          $curr_date = date('Y-m-d',strtotime('+1 day', strtotime($curr_date)));        
+          $curr_date = date('Y-m-d',strtotime('+1 day', strtotime($curr_date)));
         }
        echo "</tr></thead>";
        echo "<tbody>";
@@ -175,7 +175,8 @@ if(isset($_POST['frm_date']) && isset($_POST['to_date']))
       }
        echo "</tbody></table></br>";
        echo "<center>";
-       echo "<input type='button' name='Excel_btn' id='to_excel' value='Export To Excel' class='btn btn-success' onclick='toExcel();'/></center></br>";
-}
+       echo "<input type='button' name='Excel_btn' id='to_excel' value='Export To Excel' class='btn btn-success' onclick='toExcel();'/>&nbsp &nbsp";
 
+       echo "<input type='button' name='orientation' id='orientation' value='Change Orientation' class='btn btn-primary' onclick='changeOrientation();'/></center></br>";
+}
 ?>

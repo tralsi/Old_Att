@@ -32,11 +32,11 @@ if(isset($_SESSION['fac_full_name']))
 	  		 <ul class="dropdown-menu">
                 <li><a href="welcome1.php" style="padding:10px"> <span class="glyphicon glyphicon-home" style="margin-right:10px"></span>Faculty Home</a></li>
 
-				<li><a href="faculty_subjects.php" style="padding:10px"><span class="glyphicon glyphicon-book" style="margin-right:10px"></span> Subjects</a></li>
+				<!-- <li><a href="faculty_subjects.php" style="padding:10px"><span class="glyphicon glyphicon-book" style="margin-right:10px"></span> Subjects</a></li> -->
                 
                 <li role="separator" class="divider"></li>
 
-                <li><a href="#" style="padding:10px">
+                <li><a href="student_attendance.php" style="padding:10px">
                 <span class="glyphicon glyphicon-education" style="margin-right:10px"></span> Student's Attendance</a></li>
 
                 <li><a href="class_attendance.php" style="padding:10px">

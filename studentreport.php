@@ -12,7 +12,6 @@ if($stud_res)
     $stud_sem = $stud_row['sem_id'];
     $stud_div = $stud_row['div_id'];
   }
-
 ?>
 
 <html>
@@ -211,7 +210,7 @@ if($stud_res)
         
         // Detailed report
        
-        echo "<table class='table table-bordered table-hover table-condensed' style='width:75%; margin:auto'>";
+        echo "<table class='table table-bordered table-hover table-condensed' id='rptable' style='width:75%; margin:auto'>";
         echo "<tr class='navbar-color'>";
 
         $days = (strtotime($to_date) - strtotime($frm_date))/86400;
@@ -224,10 +223,15 @@ if($stud_res)
    
         $start_day = date('d',strtotime($frm_date));
         $end_day = $start_day + $days;
-        echo "<td class='text-center navbar-color'><span>&#8595;</span> Sub / Date <span>&#8594;</span> </td>";
-        for($i=$start_day; $i<= $end_day;$i++)
+        // echo "<td class='text-center navbar-color'><span>&#8595;</span> Sub / Date <span>&#8594;</span> </td>";
+        echo "<td class='text-center navbar-color'>Sub/Date</td>";
+        //for($i=$start_day; $i<= $end_day;$i++)
+        $curr_date = $frm_date;
+        while($curr_date <= $to_date)
           {
-          echo "<td class='navbar-color text-center'>".sprintf("%02s", $i)."</td>";
+          $day = date('d',strtotime($curr_date));
+          echo "<td class='navbar-color text-center'>".sprintf("%02s", $day)."</td>";
+          $curr_date = date('Y-m-d',strtotime('+1 day', strtotime($curr_date)));
           }
        echo "</tr>";
 
@@ -249,30 +253,9 @@ if($stud_res)
 
               $cur_date = $frm_date;
 
-             // $tot_att_qry = "SELECT * FROM student_attendance WHERE att_date >= '$frm_date' AND att_date <= '$to_date' AND sub=$subId  AND student_attendance.div=$stud_div";
-            
-
-
-              // if($tot_att_res)
-              //   {
-                  
-              //     //  while($tot_att_row = mysqli_fetch_assoc($tot_att_res))
-              //       //{
-              //        // echo $tot_att_row['att_date']."</br>";
-              //       //}
-              //     //echo "total att reco =".$tot_att_row;
-              //     $dt = $tot_att_row['att_date']; // Exact Date
-              //     $short_dt = (int)substr($dt,8,2); //  2 digits of date
-              //    // echo "date = " .$dt. "</br>";
-              //     //echo substr($dt,8,2)."</br>";
-              //   }
-              // else
-              // {
-              //   echo "Error getting list :".mysqli_error($db);
-              // }
-
               //for each subject for selected number of days
-              for($j=$start_day; $j<= $end_day; $j++)
+              // for($j=$start_day; $j<= $end_day; $j++)
+              while($cur_date <= $to_date)
                   {
              
                     $tot_att_qry = "SELECT * FROM student_attendance WHERE att_date='$cur_date' AND sub=$subId  AND student_attendance.div=$stud_div";
@@ -326,36 +309,71 @@ if($stud_res)
                    // $cur_date = date_format(strtotime($new_date),'Y-m-d');
                   //  echo "j= ". $j. " ";
                     $cur_date = date('Y-m-d',$new_date);
-                   // echo $cur_date;
 
-                    //increment Current Date
-
-
-
-                    //$row = mysqli_fetch_assoc($tot_att_res);
-                    //$sub_row= mysqli_fetch_assoc($sub_res);
-                 //   $sub_cnt = mysqli_num_rows($sub_res);
-                    
-                    // echo "Sub_cnt = ".$sub_cnt;
-                    // echo "SubId = ".$subId;
-                   
-                    
-                    
-                      // if($i==$dt)
-                      //   {
-                      //     echo "<td>Y</td>";
-                      //   }
-                      //   else
-                      //   {
-                      //     echo "<td>-</td>";
-                      //   }
                   } //Day for  loop ends
 
               echo "</tr>";
 
         } //Subject count for loop ends here
-      } //If isset _POST[submit] ends here
+    
+        echo "</table></br><center>";
+
+        // Export to Excel & Orientation Button
+        echo "<input type='button' name='Excel_btn' id='to_excel' value='Export To Excel' class='btn btn-success' onclick='toExcel();'/>&nbsp &nbsp";
+
+       echo "<input type='button' name='orientation' id='orientation' value='Change Orientation' class='btn btn-primary' onclick='changeOrientation();'/></center></br></br>";
+
+      } //If isset _POST[submit] ends her
+?>
+</body>
+<script src="js/xlsx.full.min.js"></script>
+<script type="text/javascript">
+
+function toExcel(){
+  alert('inside Export to Excel');
+  var wb = XLSX.utils.book_new();
+ // var Heading =[["Class Attendace"]];
+  wb.SheetNames.push("Student Attendance");
+   //XLSX.utils.aoa_to_sheet(Heading);
+   var ws2 = XLSX.utils.table_to_sheet(document.getElementById('rptable'));
+  wb.Sheets["Student Attendance"] = ws2;
+  XLSX.writeFile(wb, 'Stud_Attendance.xlsx');
+}
+
+
+function changeOrientation()
+{
+  wd = parseInt($("#rptable").css('width'));
+  width =  parseInt($(window).width());
+  var ratio = width/wd;
+  
+  if(ratio < 2 )
+  $("#rptable").css({"width": "10%", "margin": "auto"});
+  else
+  $("#rptable").css({"width": "100%", "margin": "auto"});
+
+  $("#rptable").each(function() { 
+   // if ( !$(this).hasClass("reverted") ) {
       
-      ?>
-  </body>
+        var $this = $(this);
+        var newrows = [];
+        $this.find("tr").each(function(){
+            var i = 0;
+            $(this).find("td, th").each(function(){
+                i++;
+                if(newrows[i] === undefined) { 
+                    newrows[i] = $("<tr></tr>"); 
+                }
+                newrows[i].append($(this));
+            });
+        });
+        $this.find("tr").remove();
+        $.each(newrows, function(){
+            $this.append(this);
+            $this.addClass('reverted');
+        });
+   // }  
+});
+}
+ </script>
 </html>

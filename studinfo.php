@@ -69,7 +69,7 @@ if(isset($_POST['frmdate'])&& isset($_POST['todate']))
   echo "<table class='table table-bordered' id='rptable'>";
     echo "<thead>";
     echo "<tr class='text-center navbar-color'>";
-      echo "<td>Status/Date</td>";
+      echo "<td class='text-center navbar-color'>Date</td>";
       
         // $days = (strtotime($to_date) - strtotime($frm_date))/86400;
         // $start_day = date('d',strtotime($frm_date));
@@ -86,8 +86,8 @@ if(isset($_POST['frmdate'])&& isset($_POST['todate']))
           echo "<td class='navbar-color text-center'>".sprintf("%02s", $day)."</td>";
           $curr_date = date('Y-m-d',strtotime('+1 day', strtotime($curr_date)));        
         }
-       echo "<td>Att/Total</td>";
-       echo "<td>Per(%)</td>";
+       echo "<td class='navbar-color text-center'>Att/Total</td>";
+       echo "<td class='navbar-color text-center'>Per(%)</td>";
        echo "</tr></thead>";
        echo "<tbody>";
        //Cheking attendance for the student for that perticular date for that subject
@@ -174,7 +174,7 @@ if(isset($_POST['frmdate'])&& isset($_POST['todate']))
               $stud_sub_att = mysqli_num_rows( $stud_sub_att_res);
              
               // Subject Attendance / Total No. Of Lectures 
-              echo "<td>".($sub_tot_att-$stud_sub_att). " / ". $sub_tot_att."</td>";
+              echo "<td class='text-center'><strong>".($sub_tot_att-$stud_sub_att). " / ". $sub_tot_att."</strong></td>";
               
               if($sub_tot_att == 0)
                 $per = 0;
@@ -197,7 +197,10 @@ if(isset($_POST['frmdate'])&& isset($_POST['todate']))
           echo "</tr>";
           echo "</tbody></table></br>";
        echo "<center>";
-       echo "<input type='button' name='Excel_btn' id='to_excel' value='Export To Excel' class='btn btn-success' onclick='toExcel();'/></center></br>";
+       echo "<input type='button' name='Excel_btn' id='to_excel' value='Export To Excel' class='btn btn-success' onclick='toExcel();'/> &nbsp &nbsp";
+      
+       echo "<input type='button' name='orientation' id='orientation' value='Change Orientation' class='btn btn-primary' onclick='changeOrientation();'/></center></br>";
+
 }
 else
 {

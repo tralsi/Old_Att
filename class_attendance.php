@@ -51,7 +51,7 @@ else
                 
                 <li role="separator" class="divider"></li>
 
-                <li><a href="#" style="padding:10px">
+                <li><a href="student_attendance.php" style="padding:10px">
                 <span class="glyphicon glyphicon-education" style="margin-right:10px"></span> Student's Attendance</a></li>
 
                 <li><a href="class_attendance.php" style="padding:10px">
@@ -75,10 +75,8 @@ else
    <div class="container" style="margin:auto">
   <center>   
   <div class="row" style="text-align:center; vertical-align: middle">
-        
-  
-
-    <div class="col-md-12">
+   
+       <div class="col-md-12">
       <form action="" method="POST" class="form-inline form-container mt-4" role="form">  
       
         <div class="form-group">
@@ -148,9 +146,9 @@ else
 </body>
 <!-- following js plugins are for exporting to Excel / PDF -->
   
-  <script src="js/jspdf.min.js"></script>
+  <!-- <script src="js/jspdf.min.js"></script> -->
   <!-- <script src="https://rawgit.com/MrRio/jsPDF/master/dist/jspdf.debug.js"></script> -->
-  <script src="js/jspdf.plugin.autotable.js"></script>
+  <!-- <script src="js/jspdf.plugin.autotable.js"></script> -->
   <!-- <script src="js/tableHTMLExport.js"></script> -->
   <script src="js/xlsx.full.min.js"></script>
   
@@ -165,7 +163,42 @@ else
    //XLSX.utils.aoa_to_sheet(Heading);
    var ws2 = XLSX.utils.table_to_sheet(document.getElementById('rptable'));
   wb.Sheets["Class Attendance"] = ws2;
-  XLSX.writeFile(wb, 'Attendance.xlsx');
+  XLSX.writeFile(wb, 'Class_Attendance.xlsx');
+}
+
+function changeOrientation()
+{
+  wd = parseInt($("#rptable").css('width'));
+  width =  parseInt($(window).width());
+  var ratio = width/wd;
+  
+  if(ratio < 2 )
+  $("#rptable").css({"width": "10%", "margin": "auto"});
+  else
+  $("#rptable").css({"width": "100%", "margin": "auto"});
+
+  $("#rptable").each(function() { 
+   // if ( !$(this).hasClass("reverted") ) {
+      
+        var $this = $(this);
+        var newrows = [];
+        $this.find("tr").each(function(){
+            var i = 0;
+            $(this).find("td, th").each(function(){
+                i++;
+                if(newrows[i] === undefined) { 
+                    newrows[i] = $("<tr></tr>"); 
+                }
+                newrows[i].append($(this));
+            });
+        });
+        $this.find("tr").remove();
+        $.each(newrows, function(){
+            $this.append(this);
+            $this.addClass('reverted');
+        });
+   // }  
+});
 }
   </script>
 </html>

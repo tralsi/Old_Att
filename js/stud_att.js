@@ -9,7 +9,7 @@ $(document).ready(function(){
       url:'studinfo.php',
       data:{'subid':sub,'facid':fac},
       success:function(html){
-            console.log(html);
+           // console.log(html);
              $('#rollno').html(html);
      }}); 
     }else{
@@ -48,7 +48,7 @@ $(document).ready(function(){
       url:'studinfo.php',
       data:{'sub':subid,'rollno':rollid,'frmdate':frmdate,'todate':todate},
       success:function(html){
-             console.log(html);
+            // console.log(html);
              $('#stud-attendance').html(html);
      }}); 
     }else{
