@@ -4,12 +4,15 @@ function liststud(){
 	var divID = $("#divsn").val();
 	var lec = $("#lecturno").val();
 	var subID = $("#subject").val();
+	var dt = $("#datepicker1").val();
+	var facID = $("#facid").val();
 
 	if(courseID == ""){alert('Select Course');$("#course").focus();	return false;}
 	if(semID == ""){alert('Select Semester');$("#semester").focus();return false;}
 	if(divID == ""){alert('Select Division');$("#divsn").focus();return false;}
 	if(lec ==""){alert('Select Lecture No.');$("#lecturno").focus();return false;}
 	if(subID ==""){alert('Select Subject.');$("#subject").focus();return false;}
+	if(dt ==""){alert('Select Attendnace Date.');$("#datepicker1").focus();return false;}
 
 	$('#ajaxDiv').empty();
 
@@ -17,11 +20,11 @@ function liststud(){
 			$.ajax({
 			type:'POST',
 			url:'ajax-example1.php',
-			data:'crs='+courseID+'&sem='+semID+'&divsn='+divID,
+			data:{'crs':courseID,'sem':semID,'divsn':divID,'lecno':lec,'date':dt,'facid':facID},
 			success:function(html){
 				$('#ajaxDiv').html(html);
 				$("#ajax-container").addClass("form-container");
-								
+					
 			}}); 
 		}else{
 			$('#ajaxDiv').html('Your result will display here ... from Jquery');
@@ -107,7 +110,7 @@ $(document).ready(function(){
 }); //dcoument.ready ends here
 
 //global function
-function getAbsentees()
+function getAbsentees(flag)
 	{
 			//alert("call received");
 			var dt = $("#datepicker1").val();
@@ -117,6 +120,8 @@ function getAbsentees()
 			var divID = $("#divsn").val();
 			var facID = $("#facid").val();
 			var subID = $("#subject").val();
+			// alert('flag ='+flag);
+			// console.log('flag ='+flag);
 
 			if(dt == ""){alert('Select Date');$("#datepicker1").focus();	return false;}
 			if(courseID == ""){alert('Select Course');$("#course").focus();	return false;}
@@ -151,7 +156,7 @@ function getAbsentees()
 					{
 				type:'POST',
 				url:'reg_attendance1.php', // changes done @ Home
-				data:{'date':dt,'lecture':lectureNo,'course':courseID,'sem':semID,'div':divID, 'facultyID':facID, 'subjectid':subID, 'abslist': absent},
+				data:{'date':dt,'lecture':lectureNo,'course':courseID,'sem':semID,'div':divID, 'facultyID':facID, 'subjectid':subID, 'abslist': absent,'flg':flag},
 				success:function(html)
 				{
 				//console.log(html);
@@ -190,7 +195,5 @@ function incDate()
     var newDate = date.toDateString(); 
     newDate = new Date( Date.parse( newDate ) );
     
-    $('#datepicker1').datepicker('setDate', newDate );
-		
+    $('#datepicker1').datepicker('setDate', newDate );		
 }
-	

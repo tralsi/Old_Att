@@ -15,10 +15,11 @@ if (isset($_POST['subjectid']))  // This is required to be changed
   $lecno = $_POST['lecture'];
   $subid = $_POST['subjectid'];
   $facid = $_POST['facultyID'];
+  $flag=$_POST['flg'];
   $abs_array = array();
   //$abs_array = $_POST['abs_stud_arr'];
 
-  // Check if another faculty has marked the attendance for same day, same course , same sem, div & same lecture  no
+  // Check whether attendance has been marked for same day, same course , same sem, div & same lecture no
 
    $qry_att_check = "SELECT * FROM `student_attendance` WHERE (att_date='$f_date' AND course=$crs AND sem=$sem AND `div`=$div AND lec_no=$lecno)"; //div is in backtick as it is a reserve keyword in mySQL
 
@@ -26,25 +27,30 @@ if (isset($_POST['subjectid']))  // This is required to be changed
   if($res)
     {
       $rc = mysqli_num_rows($res);
-      if($rc>0)
+      if($rc>0) //Some one has marked attendance for that lectture
       {
         $row = mysqli_fetch_assoc($res);
         $fid = $row['fac'];
-        if($fid==$facid)
+        // if($fid==$facid)
+        // {
+        //   echo "You have already marked the attendance for this lecture.";
+        //  // $flag = 1;
+        //  //return false;
+        // }
+        // else
+        // {
+        if($fid != $facid)
         {
-          echo "You have already marked the attendance for this lecture.\n You can update the attendance by going to report and Edit it";
-          return false;
-        }
-        else
-        {
+
         $qry_fac_name = "SELECT * from faculty_master WHERE faculty_id = $fid";
         $fac_res = mysqli_query($db,$qry_fac_name);
         $fac_row = mysqli_fetch_assoc($fac_res);
 
         echo "Attendance for this lecture is already marked by ". $fac_row['faculty_salutation']. " " . $fac_row['faculty_fname'] ." ". $fac_row['faculty_lname'] ;
-
+    
         return false;
         }
+      //  }
       }
     }
 
@@ -57,21 +63,20 @@ $count = count($abs_array); // if any student is absent . varibale can be remove
 
 if($count > 0)
   {
-	  // If Individual records of each student is to be inserted
-  /* foreach($abs_array as $abs_stud)
-  {
-    $query = "INSERT INTO att_master (att_date,att_crs_id,att_sem_id,att_div_id,att_lec_no,att_sub_id,att_fac_id,att_stud_id,att_stud_presence) VALUES ('$f_date',$crs,$sem,$div,$lecno,$subid,$facid,'$abs_stud','A')";
-	
-    mysqli_query($db,$query);
-  } */
-  
-  // if single record for all the students using csv is to be inserted
-  
-   $vals = implode(',',$abs_array);
-   
-   $query = "INSERT INTO student_attendance (student_attendance.att_date,student_attendance.lec_no,student_attendance.course,student_attendance.sem,student_attendance.div,student_attendance.fac,student_attendance.sub,student_attendance.abs) VALUES ('$f_date',$lecno,$crs,$sem,$div,$facid,$subid,'$vals')";
 
-       if(mysqli_query($db,$query))
+   $vals = implode(',',$abs_array);
+   if($flag==1) //update Existing attendance
+   {
+   // echo "<script>alert('updating...');</script>";
+   $query = "UPDATE student_attendance SET student_attendance.abs = '$vals' WHERE (student_attendance.att_date = '$f_date' AND student_attendance.lec_no=$lecno AND student_attendance.course=$crs AND student_attendance.sem=$sem AND student_attendance.div=$div AND student_attendance.fac=$facid AND student_attendance.sub=$subid)";
+    
+   }
+   else //Insert new Attendance Record
+   {
+   $query = "INSERT INTO student_attendance (student_attendance.att_date,student_attendance.lec_no,student_attendance.course,student_attendance.sem,student_attendance.div,student_attendance.fac,student_attendance.sub,student_attendance.abs) VALUES ('$f_date',$lecno,$crs,$sem,$div,$facid,$subid,'$vals')";
+   }
+  
+   if(mysqli_query($db,$query))
       {
         //insert last attendance update date by faculty
         $qry1 = "UPDATE faculty_master SET fac_last_entry = '$f_date' WHERE faculty_id = $facid";
@@ -83,6 +88,9 @@ if($count > 0)
         
         mysqli_query($db,$qry3);
         //echo "date is $f_date and facid is $facid');</script>";
+        if($flag==1)
+        echo "Attendance Updated successfully";
+        else
         echo "$count Students marked Absent";
       }
     else{

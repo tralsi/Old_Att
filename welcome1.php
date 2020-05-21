@@ -15,7 +15,7 @@ include('session.php');
     <script src="js/jquery-1.12.4.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-datepicker.min.js"></script>
-	<script src="js/welcome.js"></script>
+		<script src="js/welcome.js"></script>
 
     <title>Welcome </title>
   </head>
@@ -44,16 +44,13 @@ include('session.php');
 			$fac_fullname = $row['faculty_salutation']. " ". $row['faculty_fname']. " ". $row['faculty_lname'];
 			$_SESSION['fac_full_name']=$fac_fullname; // will require on faculty_subjects.php navbar
 			$lastentrydate = $row['fac_last_entry'];
-		//	echo $lastentrydate;
-		//	$entrydate = date_create_from_format('d-m-Y',$lastentrydate);
-		//	echo date_format($entrydate,"d-m-Y");
+		
 			if($lastentrydate !='0000-00-00')	
 			{
 
 			$dt = strtotime($lastentrydate);
 			$nextdate= date("d-m-Y",strtotime("+1 day", $dt)); // Next date for default entry date
 			$ledt = date_create_from_format('Y-m-d',$lastentrydate); // converts to date object from String
-			//	$query_sub = $db->query("SELECT * FROM subject_allocation WHERE suballoc_fac_id ='$fac_id'"); 
 			}
 
 			$qry_sub = "SELECT * FROM subject_allocation WHERE suballoc_fac_id ='$fac_id'";
@@ -63,19 +60,16 @@ include('session.php');
 				$sub_rc= mysqli_num_rows($res_sub);
 			}
 		}
-		
-   ?>
+?>
 
 <nav class="navbar navbar-color"> 
-   
    <div class="container"> 
-	 <!-- <div class="navbar-header">  -->
-	 <div class="collapse navbar-collapse">
+		 <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav">
-			<li class="dropdown">
-				<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<li class="dropdown">
+					<a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 					<span class="glyphicon glyphicon-menu-hamburger navbar-color"></span>
-				</a>
+					</a>
 
 				<div class="navbar-brand"> 
 					Welcome ,<span id="userid"> <?php echo ucwords(strtolower($fac_fullname)); ?></span>
@@ -248,11 +242,8 @@ include('session.php');
 	</nav>
 	</div>
 	
-	<div class="container" id="ajax-container">
+	<div class="container" id="ajax-container"></br>
        <div id = 'ajaxDiv'></div>  
 	</br>
-	
-
 	</body>
-   
 </html>

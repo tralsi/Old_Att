@@ -92,7 +92,6 @@
             ajaxRequest.send(); 
          }
 
-		
 		//$(document).ready(function() {
 			//$("#register").click(
 			function getAbsentees()
