@@ -1,18 +1,6 @@
-.fa-1x {
-    font-size: 1.5rem;
-    }
-    .navbar-toggler.toggler-example {
-    cursor: pointer;
-    }
-    .dark-blue-text {
-    color: #0A38F5;
-    }
-    .dark-pink-text {
-    color: #AC003A;
-    }
-    .dark-amber-text {
-    color: #ff6f00;
-    }
-    .dark-teal-text {
-    color: #004d40;
-    }
+.custom-input{box-shadow:none;}
+.bg-white{background:#fff !important;}
+label{margin-left: 20px;margin-top:20px;}
+#datepicker{width:280px; margin: 0px 20px 20px 20px;box-shadow:2px 2px 7px rgba(0,0,0,0.1);border-radius:4px;}
+#datepicker > span:hover{cursor: pointer;}
+.datepicker .prev, .datepicker .next {font-size:25px !important;line-height:12px !important; vertical-align:top;}

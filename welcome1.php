@@ -7,16 +7,100 @@ include('session.php');
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+		
+	
+		<link rel="stylesheet" href="css/bootstrap-datepicker3.css">
+    <!-- <link rel="stylesheet" href="css/bootstrap-datepicker.css"> -->
+		<!-- <link rel="stylesheet" href="css/style.css"> -->
+		<link href="css/bootstrap_chkbox.css" rel="stylesheet"> <!-- added on 09-Dec-2018 -->
+		<!-- <link href="css/datepicker-modified.css" rel="stylesheet"> -->
+		<link href="css/bootstrap.min.css" rel="stylesheet">
+		<link href="css/global.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/bootstrap-datepicker3.css">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-	<link href="css/bootstrap_chkbox.css" rel="stylesheet"> <!-- added on 09-Dec-2018 -->
-	<link href="css/global.css" rel="stylesheet">
-    <script src="js/jquery-1.12.4.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap-datepicker.min.js"></script>
+
+		<script src="js/jquery-1.12.4.min.js"></script>
+		<!-- <script src="https://unpkg.com/@popperjs/core@2"> -->
+		<!-- <script src="js/popper.min.js"></script> -->
+		
+		<!-- <script src="js/bootstrap-datepicker.js"></script> -->
+		<script src="js/bootstrap-datepicker.min.js"></script>
+		
 		<script src="js/welcome.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<!-- <script src="js/index.js"></script> -->
 
+	<!-- Style added on 31/05/2020 for Datepicker width -->
+	<style type="text/css">
+   		
+			/* .datepicker table tr td.new, .datepicker table tr td.old
+				{
+						height: 0;
+						line-height: 0;
+						visibility: hidden;
+				} */
+
+				.table-condensed
+				{
+						width: 285px;
+						font-size: 14px;
+						font-weight:lighter;
+						color:black;
+						/* border:1px solid blue; */
+				}
+
+				.myHoliday, td.day.disabled.myHoliday:hover
+{
+  /* background: orangered !important;
+  color : white !important; */
+  background:#FFA000!important;
+  border-radius:50%!important;
+  width:30px!important;
+  height:30px!important;
+  line-height:29px!important;
+  color:#fff!important;
+  cursor: not-allowed !important;
+  /* display:inline-block !important;  */
+  padding:0px !important;
+  box-shadow:1px 1px 10px rgba(0,0,0,0.1)!important;
+  margin:auto;
+
+  /* margin:5px; */
+}
+
+.datepicker table tr td.day:hover, .datepicker table tr td.focused
+{
+  background:#03A9F4!important;
+  border-radius:50%!important;
+  width:30px!important;
+  height:30px!important;
+  line-height:29px!important;
+  color:#fff!important;
+  /* margin:5px !important;  */
+  /* display:inline-block !important;  */
+  box-shadow:1px 1px 10px rgba(0,0,0,0.1)!important;
+  cursor: pointer !important;
+  padding:0px !important;
+  margin:auto;
+}
+
+.datepicker table tr td.disabled.day:hover,td.old.disabled.day:hover,td.new.disabled.day:hover
+{
+  background:lightgrey!important;
+  border-radius:50%!important;
+  width:30px!important;
+  height:30px!important;
+  line-height:29px!important;
+  color:#fff!important;
+  /* margin:5px !important;  */
+  /* display:inline-block !important;  */
+  box-shadow:1px 1px 10px rgba(0,0,0,0.1)!important;
+  cursor: not-allowed !important;
+  padding:0px !important;
+  margin:auto;
+}
+
+			
+    </style>
     <title>Welcome </title>
   </head>
    
@@ -86,10 +170,7 @@ include('session.php');
 				<li><a href="class_attendance.php" style="padding:10px">
 					<span class="glyphicon glyphicon-list-alt" style="margin-right:10px"></span> Class Attendance</a>
 				</li>
-				<!-- <li role="separator" class="divider"></li>
-				<li><a href="#">Separated link</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#">One more separated link</a></li> -->
+				
             </ul>
           </li>
 		</ul>
@@ -121,26 +202,7 @@ include('session.php');
    		
    <div class="container form-container">
    <input type="hidden" id="facid" value=<?php echo $fac_id ?> />
-		<!-- <div class="row text-info">
-			<strong>
-			<div class="col-md-4">Welcome
-				<span id="userid"> <?php //echo $fac_fullname; ?> </span>
-			</div>
-				
-			<div class="col-md-4">Last entry date :
-				<span id='lastentrydate'> <?php /* if($lastentrydate =='0000-00-00')
-				 					echo "Not Available";
-							 else
-									echo date_format($ledt,"M d, Y");*/
-				  ?>
-				</span>
-			</div>
-			
-			<div class="col-md-4" style="text-align:right">
-				<a href="logout.php">Sign Out</a>
-			</div>
-			</strong>
-		</div> -->
+		
 		
 		<div class="row">&nbsp</div>
    
@@ -154,21 +216,89 @@ include('session.php');
 				
 				<div class="input-group date col-md-3">
 			
-						<input class="form-control" type="text" id="datepicker1" value=
+						<input class="form-control" type="text" id="datepicker1" width="220" data-container="body" data-toggle="tooltip" value=
 										<?php
 											if($lastentrydate !='0000-00-00')
 											echo $nextdate;
 											?>>
-						<span class="input-group-addon">
-							<span class="glyphicon glyphicon-calendar"></span>
-						</span>
+						<label class="input-group-addon" for="datepicker1">
+								<span class="glyphicon glyphicon-calendar"></span>
+						</label>
 			
 				</div>
 			          
 			<script type="text/javascript">
 				$(function() {
-						$('#datepicker1').datepicker({format:"dd-mm-yyyy",autoclose:true,endDate:'0d',todayBtn:'linked',todayHighlight:true,daysOfWeekDisabled:'0'});
-						//$('#datetimepicker1').datetimepicker("show");
+					var holidays_date = new Array();
+					var holidays_desc = new Array();
+					
+					$.ajax({
+											type:'POST',
+											dataType:'json',
+											url:'getHolidays.php',
+											success:function(response)
+												{
+													var len = response.length;
+														for(var i=0; i<len; i++)
+														{
+															holidays_date[i] = response[i].date;
+															holidays_desc[i] = response[i].desc;
+														}
+										//			var result = eval(data);
+													// console.log(holidays_date);
+													// console.log(holidays_desc);
+												}
+									}); 
+						
+						$('#datepicker1').datepicker({
+							beforeShowDay: setHoliDays,
+							format:"dd-mm-yyyy",
+							autoclose:true,
+							endDate:'0d',
+							todayBtn:'linked',
+							todayHighlight:true,
+							daysOfWeekDisabled:'0',
+							startDate:'-180d',
+							}).on('show', function(){
+							$("td.day.disabled.myHoliday").each(function(index, element){
+							//	debugger;
+								var $element = $(element);
+							//	$element.attr("title", "Promo Date");
+								$element.data("container", "body");
+								$element.tooltip()
+							});
+						});
+						
+						function setHoliDays(date)
+    				 {
+
+							var year = date.getFullYear(), month = date.getMonth(), day = date.getDate();
+						//	checkdate = day+"-"+month+"-"+year;
+						
+								
+								// debugger;
+								//var holiDays =[['23-03-2020','Happy Day'],['01-05-2020','New Years Day'],['14-04-2020','Pongal'],['25-12-2020','Christmas Day']];
+
+														
+									for (var i=0; i < holidays_date.length; i++)
+									{
+										str = holidays_date[i].split("-",3);
+									
+										if (day == str[0] && month == str[1] - 1 && year == str[2])
+											{
+												return{
+													enabled: false, 
+													classes:'myHoliday', 
+													tooltip: holidays_desc[i],
+												 };
+											}
+												
+									}
+							// $("td.day.disabled.myHoliday").attr("data-toggle","tooltip");
+							return true;
+							
+     					}
+							
 				});
 			</script>
 			</div> <!-- row div ends here -->
@@ -187,7 +317,7 @@ include('session.php');
 					?>
 					  <!-- <label>Course : </label> &nbsp; -->
 					  
-					  <select class='form-control' name='course' id='course'>
+					  <select class='form-control' name='course' id='course' data-toggle="tooltip" title="Select Course" data-container="body">
 						<option value=''>Course</option>
 					 
 						<?php
@@ -202,16 +332,16 @@ include('session.php');
 					</select>
 				
 				<!-- &nbsp; <label>Semester : </label> &nbsp; -->
-					<select name="semester" id="semester" class="form-control">
+					<select name="semester" id="semester" class="form-control" data-toggle="tooltip" title="Semester">
 					<option value="">Sem</option>
 					</select>
 				
 					<!-- &nbsp; <label>Division : </label> &nbsp; -->
-					<select name="divsn" id="divsn" class="form-control">
+					<select name="divsn" id="divsn" class="form-control" data-toggle="tooltip" title="Division">
 					<option value="">Div</option>
 					</select>
 		   	
-				<select class='form-control' name='lectureno' id='lecturno' placeholder="Lecture No">
+				<select class='form-control' name='lectureno' id='lecturno' placeholder="Lecture No" data-toggle="tooltip" title="Select Lecture No.">
 					<option value=''>Lecture No.</option>
 					<?php
 					$qry_lec = $db->query("SELECT DISTINCT lecture_no,lecture_time FROM lectures order by lecture_no"); 
@@ -229,11 +359,11 @@ include('session.php');
 				</select>
 		
 				  
-				<select class='form-control' name='subject' id='subject'>
+				<select class='form-control' name='subject' id='subject' data-toggle="tooltip" title="Select Subject">
 				<option value=''>Subject</option>
 				</select>
 			
-			<input type='button' class="form-control btn btn-info" value="List Students" name="show" id="show">
+			<input type='button' class="form-control btn btn-info" value="List Students" name="show" id="show" data-toggle="tooltip" title="Click to List Students">
 			<!--  onclick = 'ajaxFunction()' -->
 			
 			</br>
@@ -245,5 +375,11 @@ include('session.php');
 	<div class="container" id="ajax-container"></br>
        <div id = 'ajaxDiv'></div>  
 	</br>
+
+	<script>
+    $( document ).ready(function() {
+        $('[data-toggle="tooltip"]').tooltip({'placement': 'top'});
+    });
+    </script>
 	</body>
 </html>
